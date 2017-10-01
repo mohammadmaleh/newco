@@ -202,13 +202,16 @@ app.listen( port , ()=>{
 });
 
 app.post('/api/users/login',(req,res)=>{
+    console.log('here')
     let body =  _.pick(req.body, ['username','password']);
+    console.log(body)
     User.findByCredentials(body.username,body.password).then((user)=> {
         return user.generateAuthToken()
             .then((token) => {
 
                 res.header('x-auth', token).send(user)
             }).catch((e) => {
+
                 res.status(400).send();
             })
     })
