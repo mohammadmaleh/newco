@@ -15,7 +15,7 @@ export const signUpAPI = (email,password,username)=>{
 export const loginAPI = (username,password)=>{
    return axios({
         method: 'post',
-        url: 'http://localhost:3000/api/users/login',
+        url: '/api/users/login',
         data: {
             username,
             password,

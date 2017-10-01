@@ -1,1 +1,0 @@
-webpackJsonp([20],{"../uploads/83845f70-a5df-11e7-b72d-bba4ff2ab703:Users:mohammadmaleh:Desktop:react-room-booking:app:assets:images:landing-image.jpg.jpg":function(a,p,e){a.exports=e.p+"8833cd3d4a817422658c573f3733bc0f.jpg"}});
