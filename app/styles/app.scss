@@ -1,0 +1,34 @@
+@import "base/variables";
+
+// foundation
+
+@import "pages/loginPage";
+@import "common/header";
+@import "pages/homePage";
+@import "components/browseFile";
+@import '../../node_modules/react-datepicker/dist/react-datepicker.css';
+@import '../../node_modules/react-tagsinput/react-tagsinput.css';
+*{
+  margin:0;
+  padding: 0;
+  box-sizing: border-box;
+}
+html{
+  background-color: #fff;
+  color: #555;
+  font-family: 'Lato', 'Arial',sans-serif;
+  font-weight: 300;
+  font-size: 20px;
+  text-rendering: optimizeLegibility;
+}
+@-webkit-keyframes autofill {
+  to {
+    color: #666;
+    background: transparent;
+  }
+}
+
+input:-webkit-autofill {
+  -webkit-animation-name: autofill;
+  -webkit-animation-fill-mode: both;
+}

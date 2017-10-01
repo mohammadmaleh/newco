@@ -1,0 +1,33 @@
+.filter-div {
+  height: 100%;
+  padding-top: 20px;
+  .filter-item{
+
+    padding: 0 10px !important;
+    margin-bottom: 10px;
+    &:after{
+        height: 2px;
+        background-color: #e67e22;
+        content :" ";
+        width: 100px;
+    }
+    h4{
+      font-size: 120%;
+      margin-bottom: 5px;
+
+    }
+
+    .room-stars{
+      display: inline-block;
+      float: left;
+      margin-right: 10px;
+
+      label{
+        margin:0;
+      }
+    }
+
+
+
+  }
+}

@@ -1,0 +1,16 @@
+.empty-search-result{
+  padding: 25px;
+  div{
+
+    p{
+      font-style: normal;
+      font-weight: 700;
+      list-style: none;
+      outline: 0;
+      font-size: xx-large;
+      padding: 0;
+      margin: 0;
+      color: $red-color;
+    }
+  }
+}

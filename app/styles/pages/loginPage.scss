@@ -1,0 +1,107 @@
+.main-container{
+  background: #4b79a1; /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #4b79a1, #283e51); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #4b79a1, #283e51); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  text-align: center;
+
+  .login-container{
+    width: 350px;
+    height: 400px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    .logo-container{
+      margin-top: 25px;
+      margin-bottom: 25px;
+
+    }
+    .login-control{
+      height: 50px;
+      display: inline-block;
+      text-align: left;
+      width: 250px;
+      margin-bottom: 15px;
+      background-color: #53535a;
+
+      border-radius: 25px;
+      border:1px solid #574f5a;
+
+      -webkit-box-shadow: 6px 6px 36px -10px rgba(0,0,0,0.75);
+      -moz-box-shadow: 6px 6px 36px -10px rgba(0,0,0,0.75);
+      box-shadow: 6px 6px 36px -10px rgba(0,0,0,0.75);
+      span{
+        margin-left: 20px;
+        margin-right: 8px;
+        margin-top: 3px;
+        padding-top: 5px;
+        color: white;
+        font-size: 17px;
+      }
+      ::-webkit-input-placeholder {color:white}
+      ::-moz-placeholder {color:white}
+      :-ms-input-placeholder {color:white}
+      input{
+        background-color: transparent;
+        border-color:transparent;
+        outline: none;
+        height: 50px;
+        color: white;
+        width: 200px;
+
+
+        &:focus{
+          border-color:transparent;
+
+        }
+        :after {
+          content: "\f087";
+          font-family: FontAwesome;
+          font-style: normal;
+          font-weight: normal;
+          text-decoration: inherit;
+          position: absolute;
+          font-size: 400px;
+          color: lightblue;
+          top: 50%;
+          left: 50%;
+          z-index: 1;
+        }
+      }
+
+    }
+    .login-button{
+      height: 50px;
+      display: inline-block;
+      text-align: center;
+      width: 250px;
+      margin-bottom: 25px;
+      background-color: #cb2731;
+      border-radius: 25px;
+      color: white;
+      padding-top: 12px;
+      -webkit-box-shadow: 6px 6px 36px -10px rgba(0,0,0,0.75);
+      -moz-box-shadow: 6px 6px 36px -10px rgba(0,0,0,0.75);
+      box-shadow: 6px 6px 36px -10px rgba(0,0,0,0.75);
+      &:hover{
+
+        cursor: pointer;
+      }
+     &:active{
+       -webkit-box-shadow: none;
+       -moz-box-shadow: none;
+       box-shadow: none;
+     }
+    }
+    .error-message{
+      color: #cb2731;
+      margin-bottom: 10px;
+      font-size: 15px;
+      height: 13px;
+    }
+  }
+
+}
