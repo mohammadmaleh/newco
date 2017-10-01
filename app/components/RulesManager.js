@@ -37,12 +37,17 @@ export default class RulesManager extends Component{
         }
     }
     refreshAllRules(){
+            console.log('jack')
         getAllRules()
             .then(res=>{
-                console.log(res)
-                this.setState({
-                    allRules:res.data.rule
-                })
+                if (res.data){
+                    this.setState({
+                        allRules:res.data.rule
+                    })
+                }
+                else {
+
+                }
             })
             .catch(e=>{
                 console.log(e)

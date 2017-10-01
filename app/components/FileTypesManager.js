@@ -14,6 +14,7 @@ export default class FileTypesManager extends Component{
         }
     }
     componentWillReceiveProps(nextProps) {
+        if(nextProps.fileTypeList)
         this.setState({fileTypeList: nextProps.fileTypeList});
     }
     handleEditFileType(fileType){
@@ -47,13 +48,16 @@ export default class FileTypesManager extends Component{
     renderRows(){
         let {fileTypeList} = this.state;
         //pick up the main headers of the tree
-        let headers = fileTypeList.filter(object => {
-            return !object.father;
-        });
-        // render the main header of the tree
-        return headers.map((row)=>{
-            return <HierarchicalTableRow key={row._id} row={row} handleEditFileType={::this.handleEditFileType} handleDeleteFileType={::this.handleDeleteFileType} fileTypeList={fileTypeList}/>
-        })
+        if (fileTypeList){
+            let headers = fileTypeList.filter(object => {
+                return !object.father;
+            });
+            // render the main header of the tree
+            return headers.map((row)=>{
+                return <HierarchicalTableRow key={row._id} row={row} handleEditFileType={::this.handleEditFileType} handleDeleteFileType={::this.handleDeleteFileType} fileTypeList={fileTypeList}/>
+            })
+        }
+
 
     }    render(){
         return(

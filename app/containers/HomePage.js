@@ -22,7 +22,7 @@ export default class HomePage extends Component{
         })
         getAllFileTypes()
             .then((res)=>{
-
+                console.log(res)
                 this.setState({
                     fileTypeList:res.data.fileType
                 })

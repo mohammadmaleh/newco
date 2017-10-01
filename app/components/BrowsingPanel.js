@@ -17,7 +17,7 @@ export default class BrowsingPanel extends Component{
 
         let that = this;
         this.setState({
-            image: '../..' + filePath
+            image:filePath
         })
         // import('../../uploads/' + url)
         //     .then(res=>{
@@ -47,42 +47,12 @@ export default class BrowsingPanel extends Component{
 
         this.setState(this.props.file);
     }
-    renderImage(){
-        let file =this.state;
-        let extType = file.type
-        if (extType.includes("image")){
-            return <img src={file.image} alt=""/>
-
-        }
-        else if(extType.includes("ms-excel") || extType.includes("wordprocessingml")  ||extType.includes("ms-word")){
-            return  <img src={require('../assets/images/fileTypes/Doc.png')} alt=""/>
-        }
-        else if(extType.includes("msword") || extType.includes("spreadsheetml")  ||extType.includes("ms-excel")){
-            return  <img src={require('../assets/images/fileTypes/XLSX.png')} alt=""/>
-        }
-        else if(extType.includes("pdf")){
-            return  <img src={require('../assets/images/fileTypes/PDF.png')} alt=""/>
-        }
-        else if(extType.includes("mp3")){
-            return  <img src={require('../assets/images/fileTypes/MP3.png')} alt=""/>
-        }
-        else if(extType.includes("mp4")){
-            return  <img src={require('../assets/images/fileTypes/VIDEO.png')} alt=""/>
-        }
-        else if( extType.includes("vnd.ms-fontobject")||extType.includes("font-woff")||extType.includes("font-woff")||extType.includes("svg+xml")||extType.includes("x-font-opentype")){
-            return  <img src={require('../assets/images/fileTypes/FONT.png')} alt=""/>
-        }
-        else {
-            return  <img src={require('../assets/images/fileTypes/Blank.png')} alt=""/>
-
-        }
-    }
 
     renderImage(){
         let file =this.state;
         let extType = file.type
         if (extType.includes("image")){
-            return  <img src={this.state.image} alt=""/>
+            return  <img src={'/'+file.filePath} alt=""/>
 
         }
 

@@ -20,8 +20,10 @@ export default class BrowseFiles extends Component{
         this.handleEndDateChange = this.handleEndDateChange.bind(this)
     }
     componentWillReceiveProps(nextProps) {
-        this.setState({fileTypeList: nextProps.fileTypeList});
+        if (nextProps.fileTypeList)
+            this.setState({fileTypeList: nextProps.fileTypeList});
     }
+
     handleStartDateChange(date){
         this.setState({
             startDate: date
