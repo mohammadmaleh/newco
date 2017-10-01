@@ -1,5 +1,4 @@
 import axios from 'axios'
-let baseUrl = process.env.PORT ?'/' : '/' ;
 export const searchFiles = (searchObject)=>{
     return axios({
         method: 'post',

@@ -16,16 +16,18 @@ export default class BrowsingPanel extends Component{
         let url = filePath.split("/").pop()
 
         let that = this;
-
-        import('../../uploads/' + url)
-            .then(res=>{
-                console.log(res)
-                that.setState({
-                    image:res
-                })
-        }).catch(e=>{
-            console.log(e)
+        this.setState({
+            image: '../..' + filePath
         })
+        // import('../../uploads/' + url)
+        //     .then(res=>{
+        //         console.log(res)
+        //         that.setState({
+        //             image:res
+        //         })
+        // }).catch(e=>{
+        //     console.log(e)
+        // })
     }
     componentWillReceiveProps(nextProps) {
 
