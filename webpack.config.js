@@ -110,6 +110,7 @@ const rules = [
 ]
 
 if (isProduction) {
+    console.log('iProduction build')
     // Production plugins
     plugins.push(
         new webpack.optimize.UglifyJsPlugin({
