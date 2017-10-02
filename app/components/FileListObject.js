@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import{Accordion,Panel,Glyphicon }from'react-bootstrap';
-export default class BrowsingRow extends Component {
+import moment from 'moment'
+export default class FileListObject extends Component {
     constructor(){
         super();
         // this.removeRow = this.removeRow.bind(this);
@@ -44,7 +45,7 @@ export default class BrowsingRow extends Component {
 
             return children.map((row)=>{
                 return <div className="list-group" key={row._id}>
-                    <BrowsingRow  handleDeleteFileType ={this.props.handleDeleteFileType} handleBrowseFile={this.props.handleBrowseFile} handleEditFileType={this.props.handleEditFileType} row={row}  files={files} sharedData={this.props.sharedData}/>
+                    <FileListObject  handleDeleteFileType ={this.props.handleDeleteFileType} handleBrowseFile={this.props.handleBrowseFile} handleEditFileType={this.props.handleEditFileType} row={row}  files={files} sharedData={this.props.sharedData}/>
                 </div>
             })
         }
@@ -75,15 +76,17 @@ export default class BrowsingRow extends Component {
             if (childrenFiles.length > 0 ){
 
                 return childrenFiles.map((row)=>{
-                    return <div className="list-group" key={row._id}>
-                        {/*<BrowsingRow  handleDeleteFileType ={this.props.handleDeleteFileType} handleEditFileType={this.props.handleEditFileType} row={row}  fileTypeList={fileTypeList}/>*/}
+                    return <ul className="list-group" key={row._id}>
+                        {/*<FileListObject  handleDeleteFileType ={this.props.handleDeleteFileType} handleEditFileType={this.props.handleEditFileType} row={row}  fileTypeList={fileTypeList}/>*/}
                         <li className="list-group-item" onClick={()=>{this.props.handleBrowseFile(row)}}>
-                            {row.title}
-                            {row.uploadedBy}
-                            {row.uploadedAt}
+                            <div className="row">
+                                <div className="col-lg-3"> {row.title}</div>
+                                <div className="col-lg-3"> {moment.unix(row.uploadedAt).format('DD/MM/YYYY')}</div>
+                                <div className="col-lg-3"> {row.uploadedBy}</div>
+                            </div>
 
                         </li>
-                    </div>
+                    </ul>
                 })
             }
         }
@@ -111,22 +114,19 @@ export default class BrowsingRow extends Component {
         let {hasFileTypeChildren,hasFilesChildren,expanded} = this.state;
 
         return(
-            <Accordion >
+            <Accordion bsClass="file-type-object" >
                 <Panel
-                    // i think the header is ugly and should be shortened in another component, but header property of Panel component didn't accept react components!!
                     header={
                        <div className="row" onClick={this.handleExpand}>
+                           <div className="col-lg-3">File Type : {row.name}</div>
 
-
-                               {/*{hasChildren ? <Glyphicon className={" pull-left expand-icon " + (expanded ? 'expanded':'')} glyph="menu-right"/> :<div className="empty-space">&nbsp;</div> }*/}
-                           {/*<p>{hasChildren}</p>*/}
-                           <p>{row.name}</p>
 
 
                        </div>
 
                     }
                     eventKey={row.ID}>
+
                     {this.findFiles()}
 
                     {this.findChildren()}

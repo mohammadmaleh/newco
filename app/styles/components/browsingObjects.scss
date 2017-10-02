@@ -1,0 +1,20 @@
+
+.rule-list{
+  .header{
+    color: white;
+    font-weight: bold;
+  }
+  li{
+    border-bottom: 1px solid $light-grey;
+    padding:5px;
+    &:hover{
+      cursor: pointer;
+    }
+  }
+}
+.filetypeheader{
+    background-color: $normal-blue;
+    color: white;
+    font-weight: bold;
+  padding:5px;
+}

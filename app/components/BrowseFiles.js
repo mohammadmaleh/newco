@@ -1,7 +1,7 @@
 import React,{Component} from 'react'
 import {Modal} from 'react-bootstrap'
 import BrowseFileSearch from 'BrowseFileSearch'
-import BrowsingRow from 'BrowsingRow'
+import FileListObject from 'FileListObject'
 import BrowsingPanel from 'BrowsingPanel'
 import {postFiles,deleteFile} from 'filesAPI'
 import moment from 'moment'
@@ -60,7 +60,7 @@ export default class BrowseFiles extends Component{
         });
         // render the main header of the tree
         return headers.map((row)=>{
-            return <BrowsingRow key={row._id} row={row}  handleBrowseFile={::this.handleBrowseFile}  sharedData={this.props.sharedData} files={files}/>
+            return <FileListObject key={row._id} row={row}  handleBrowseFile={::this.handleBrowseFile}  sharedData={this.props.sharedData} files={files}/>
         })
 
     }
@@ -119,15 +119,16 @@ export default class BrowseFiles extends Component{
     }
     handleDownloadFile(id){
         console.log('downloading')
-        downloadFile(id)
-            .then(res => {
-                console.log(res)
-                window.open('/download');
-            })
-            .catch(e=>{
-                console.log(e)
-
-            })
+        window.open('http://localhost:3000/api/download/'+id)
+        // downloadFile(id)
+        //     .then(res => {
+        //         console.log(res)
+        //         window.open('/download');
+        //     })
+        //     .catch(e=>{
+        //         console.log(e)
+        //
+        //     })
     }
     findFiles(){
         let {files} = this.state;
@@ -143,7 +144,7 @@ export default class BrowseFiles extends Component{
 
                 return childrenFiles.map((row)=>{
                     return <div className="list-group" key={row._id}>
-                        {/*<BrowsingRow  handleDeleteFileType ={this.props.handleDeleteFileType} handleEditFileType={this.props.handleEditFileType} row={row}  fileTypeList={fileTypeList}/>*/}
+                        {/*<FileListObject  handleDeleteFileType ={this.props.handleDeleteFileType} handleEditFileType={this.props.handleEditFileType} row={row}  fileTypeList={fileTypeList}/>*/}
                         <li className="list-group-item" onClick={(e)=>{    e.stopPropagation(); this.handleBrowseFile(row)}}>
                             {row.title}
                             {row.uploadedBy}
@@ -177,7 +178,7 @@ export default class BrowseFiles extends Component{
             <div className="browse-files">
 
                 <BrowseFileSearch showBrowser={::this.showBrowser} sharedData={this.props.sharedData}/>
-                <div className=" light-grey-background">
+                <div className=" body-container light-grey-background">
                     <div className=" container">
                         <div className="row">
                             <div className="col-lg-8 ">
@@ -235,7 +236,12 @@ export default class BrowseFiles extends Component{
                                         {this.state.selectedBrowseFile ?
                                             <BrowsingPanel file={this.state.selectedBrowseFile} showEditModal={::this.showEditModal} showDeleteModal={::this.showDeleteModal}/>
                                             :
-                                            ''
+                                            <div className="browser-empty-container">
+                                                <div className="browser-empty">
+                                                    Waiting File Selection ...
+                                                </div>
+                                            </div>
+
                                         }
 
                                     </div>
@@ -266,13 +272,13 @@ export default class BrowseFiles extends Component{
 
                 <Modal  dialogClassName="delete-modal" show={this.state.showDeleteModal} onHide={::this.closeDeleteModal}>
                     <Modal.Header closeButton>
-                        <Modal.Title>delete</Modal.Title>
+                        <Modal.Title><h3>Delete File</h3></Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         are u sure you want to delete {this.state.selectedBrowseFile ?  this.state.selectedBrowseFile.title :''} ?
                     </Modal.Body>
                     <Modal.Footer>
-                        <button className="btn btn-info" onClick={::this.closeDeleteModal}>Close</button>
+                        <a className="btn btn-info" onClick={::this.closeDeleteModal}>Close</a>
                         <button className="btn btn-dange" onClick={::this.handleSubmitDelete}>Delete</button>
                     </Modal.Footer>
                 </Modal>

@@ -5,6 +5,22 @@
       color: white;
       line-height: 10px;
     }
+  .file-objects-container{
+    height: 100%;
+    overflow: auto;
+    border: 1px solid $light-grey;
+  }
 
 
+}
+.modal-body,.modal-footer{
+  background-color: $light-grey;
+}
+.edit-image-container{
+  width: 270px;
+  height: 280px;overflow: auto;
+  text-align: center;
+  img{
+    width: 270px;
+  }
 }

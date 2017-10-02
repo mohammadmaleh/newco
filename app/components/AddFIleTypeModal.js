@@ -40,10 +40,13 @@ export default class AddFIleTypeModal extends  Component{
             }
             postFileTypes(createObject)
                 .then((res)=>{
-                this.props.sharedData.refreshRulesAndFileTypes();
-                    console.log(res)
+                    this.props.sharedData.refreshRulesAndFileTypes();
+                    this.props.closeAddModal()
+                    this.props.sharedData.notification({message:'Your file type has been added successfully',type:'success'})
+
                 })
                 .catch((e)=>{
+                    this.props.sharedData.notification({message:'something went wrong try again later',type:'error'})
 
                 })
 
@@ -57,37 +60,38 @@ export default class AddFIleTypeModal extends  Component{
 
 
                 <Modal.Header closeButton>
-                    <Modal.Title>add</Modal.Title>
+                    <Modal.Title><h3>Add File Type</h3></Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <div className="row">
+                    <div className="newco-form">
 
-                        <div className="add-filetype-form">
-                            <div className="form-control">
-                                <label htmlFor="name">name</label>
-                                <input type="text" name="name" onChange={::this.handleFormChange} value={this.state.name}/>
+                        <div className="row">
+                            <div className="col-lg-6">
+                                <label htmlFor="">Name:</label>
+                                <input  className="newco-text-input" type="text" name="name" onChange={::this.handleFormChange} value={this.state.name}/>
+
                             </div>
-                            <div className="form-control">
-                                <label htmlFor="father">fatherrrrrr</label>
-                                <select name="father" onChange={::this.handleFormChange}>
+                            <div className="col-lg-6">
+                                <label htmlFor="">Father File Type:</label>
+                                <select  className="newco-text-input" name="father" onChange={::this.handleFormChange}>
                                     <option value="" selected> none</option>
                                     {this.props.sharedData.fileTypeList.map(fileType =>
                                         <option key={fileType._id} value={fileType._id}>{fileType.name}</option>
                                     )};
                                 </select>
-
                             </div>
-                            <div className="form-control">
-                                <label htmlFor="rule">rule</label>
-                                <select name="rule" onChange={::this.handleFormChange}>
+
+
+                        </div>
+                        <div className="row">
+                            <div className="col-lg-6">
+                                <label htmlFor="rule">Rule:</label>
+                                <select  className="newco-text-input" name="rule" onChange={::this.handleFormChange}>
                                     <option value="" selected> none</option>
                                     {this.props.sharedData.rulesList.map(rule =>
                                         <option key={rule._id} value={rule._id}>{rule.name}</option>
                                     )};
                                 </select>
-
-                            </div>
-                            <div className="form-control">
                             </div>
                         </div>
 
@@ -98,8 +102,8 @@ export default class AddFIleTypeModal extends  Component{
 
                 </Modal.Body>
                 <Modal.Footer>
-                    <button className="btn-success" onClick={this.props.ShowOrHideAddModal}>Close</button>
-                    <button className="btn-success" onClick={::this.createFileType}>Create</button>
+                    <a className="newco-button dark-yellow-background " onClick={this.props.closeAddModal}>Close</a>
+                    <a className="newco-button dark-green-background margin-left-15" onClick={::this.createFileType}>Create</a>
 
                 </Modal.Footer>
 

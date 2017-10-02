@@ -24,6 +24,9 @@
 .dark-green-background{
   background-color: $dark-green;
 }
+.dark-yellow-background{
+  background-color: $light-yellow;
+}
 .white-background{
   background-color: white;
 }
@@ -102,7 +105,9 @@
     display: block;
     text-align: left;
   }
+
 }
+
 .newco-button{
   height: 30px;
   display: inline-block;
@@ -134,6 +139,7 @@
 .newco-text-input{
   height: 30px;
   padding-left: 10px;
+  margin-bottom: 13px;
   display: inline-block;
   text-align: left;
   width:100%;
@@ -158,4 +164,42 @@
   height: 40px;
   font-weight: bold;
   line-height: 39px;
+}
+.dropzone{
+  width: 270px;
+  height: 280px;
+  text-align: center;
+  font-weight: bolder;
+  padding-top: 55px;
+  font-size: 28px;
+  margin-bottom: 10px;
+
+  background: $light-red;
+  color: white;
+  border-radius: 10px;
+  &:hover{
+    -webkit-box-shadow: 10px 10px 36px -12px rgba(179,179,179,0.78);
+    -moz-box-shadow: 10px 10px 36px -12px rgba(179,179,179,0.78);
+    box-shadow: 10px 10px 36px -12px rgba(179,179,179,0.78);
+
+  }
+
+
+}
+.newco-description,.newco-tags{
+  height: 60px;
+  overflow: auto;
+  max-height: 60px;
+}
+.newco-tags{
+  padding: 5px;
+  padding-left: 18px;
+}
+.browser-empty-container{
+  border:1px solid $light-grey;
+  font-size: 20px;
+}
+.browser-empty{
+  padding:20px;
+  font-size: 20px;
 }

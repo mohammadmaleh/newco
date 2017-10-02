@@ -646,9 +646,6 @@ app.get('/api/download/:id', function(req, res){
     }
     File.find({_id:id})
         .then(file=>{
-
-
-
             var dir=__dirname + '/'  + file[0].filePath; // give path
             res.download(dir, file.title,function (err) {
                 if(err){
@@ -677,7 +674,7 @@ app.get('/api/download/:id', function(req, res){
 
 
 app.post('/api/rule',(req,res)=>{
-    let body = _.pick(req.body , ['name','maxSize','fileExtensions'])
+    let body = _.pick(req.body , ['name','maxSize','fileExtensions','createdBy','createdAt'])
     var rule = new Rule(body)
     rule.save().then((doc)=>{
         res.send(doc)

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import{Accordion,Panel,Glyphicon }from'react-bootstrap';
-export default class HierarchicalTableRow extends Component {
+import moment from 'moment'
+export default class FileTypeListObject extends Component {
     constructor(){
         super();
         // this.removeRow = this.removeRow.bind(this);
@@ -35,7 +36,7 @@ export default class HierarchicalTableRow extends Component {
         if (children.length > 0 ){
             return children.map((row)=>{
                 return <div className="list-group" key={row._id}>
-                    <HierarchicalTableRow  handleSelectFileType ={this.props.handleSelectFileType}  row={row}  sharedData={sharedData}/>
+                    <FileTypeListObject  handleSelectFileType ={this.props.handleSelectFileType}  row={row}  sharedData={sharedData}/>
                 </div>
             })
         }
@@ -60,14 +61,10 @@ export default class HierarchicalTableRow extends Component {
                     // i think the header is ugly and should be shortened in another component, but header property of Panel component didn't accept react components!!
                     header={
                        <div className="row" onClick={()=>{this.props.handleSelectFileType(row)}}>
-
-
-                               {hasChildren ? <Glyphicon className={" pull-left expand-icon " + (expanded ? 'expanded':'')} glyph="menu-right"/> :<div className="empty-space">&nbsp;</div> }
-                           <p>{row.name}</p>
-
-
-                           <a className="col-lg-3 col-md-3 col-sm-3 col-xs-3">{row.createdBy}</a>
-                           <a className="col-lg-3 col-md-3 col-sm-5 col-xs-5">{row.createdAt}</a>
+                            <div className="col-lg-3">{row.name}</div>
+                            <div className="col-lg-3">{row.rule ? row.rule.name : ''}</div>
+                            <div className="col-lg-3">{moment.unix(row.createdAt).format("DD/MM/YYYY")}</div>
+                            <div className="col-lg-3">{row.createdBy}</div>
 
                        </div>
 

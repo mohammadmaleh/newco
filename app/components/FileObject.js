@@ -72,19 +72,13 @@ export default class FileObject extends Component{
     render(){
         let file =this.state;
         return(
-            <div className="file-object">
+            <div className="file-object newco-form">
                 <Glyphicon  glyph="remove" onClick={()=>{this.props.handleRemoveFile(file.id)}} />
                 {this.renderImage()}
-                <input type="text" name="title" value={file.title} onChange={::this.handleFormChange}/>
-                <TagsInput value={this.state.tags} onChange={::this.handleChangeTags} />
+                <input type="text" placeholder="Title" className="newco-text-input" name="title" value={file.title} onChange={::this.handleFormChange}/>
+                <TagsInput value={this.state.tags} className="newco-text-input tags-search" onChange={::this.handleChangeTags} />
 
-                <select name="fileType" onChange={::this.handleFormChange}>
-                    <option value="" selected> Any</option>
-                    {this.props.sharedData.fileTypeList.map(fileType =>
-                        <option key={fileType._id} value={fileType._id}>{fileType.name}</option>
-                    )};
-                </select>
-                <textarea name="description" value={file.description} onChange={::this.handleFormChange} ></textarea>
+                <textarea name="description"  placeholder="Description" className="newco-text-input tags-search" value={file.description} onChange={::this.handleFormChange} ></textarea>
             </div>
         )
     }

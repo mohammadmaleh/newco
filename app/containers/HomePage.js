@@ -3,7 +3,7 @@ import {Tab,Tabs} from 'react-bootstrap'
 import BrowseFiles from 'BrowseFiles'
 import FileTypesManager from 'FileTypesManager'
 import RulesManager from 'RulesManager'
-import {getAllFileTypes} from 'fileTypeAPI'
+import {getAllFileTypes,availableFileTypes} from 'fileTypeAPI'
 import {getAllRules} from 'rulesAPI'
 import NotificationSystem from 'react-notification-system'
 
@@ -65,6 +65,40 @@ export default class HomePage extends Component{
                     sharedData:{
                         ...sharedData,
                         rulesList:res.data.rule
+                    },
+
+                })
+
+
+            })
+            .catch((e)=>{
+                console.log(e)
+            })
+        getAllRules()
+            .then((res)=>{
+                let{sharedData} = this.state
+
+                this.setState({
+                    sharedData:{
+                        ...sharedData,
+                        rulesList:res.data.rule
+                    },
+
+                })
+
+
+            })
+            .catch((e)=>{
+                console.log(e)
+            })
+        availableFileTypes()
+            .then((res)=>{
+                let{sharedData} = this.state
+                console.log(res)
+                this.setState({
+                    sharedData:{
+                        ...sharedData,
+                        availableFileTypes:res.data.fileType
                     },
 
                 })

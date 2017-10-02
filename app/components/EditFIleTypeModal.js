@@ -49,8 +49,13 @@ export default class EditFIleTypeModal extends  Component{
                 .then((res)=>{
                     console.log(res)
                     sharedData.refreshRulesAndFileTypes();
+                    this.props.closeEditModal()
+                    this.props.sharedData.notification({message:'Edited Successfully',type:'success'})
+
                 })
                 .catch((e)=>{
+                    this.props.sharedData.notification({message:'something went wrong try again later',type:'error'})
+
                     console.log(e)
                 })
 
@@ -73,7 +78,7 @@ export default class EditFIleTypeModal extends  Component{
             <div>
 
                 <Modal.Header closeButton>
-                    <Modal.Title>edit</Modal.Title>
+                    <Modal.Title><h3>Edit File Type</h3></Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
 

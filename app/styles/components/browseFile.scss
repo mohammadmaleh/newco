@@ -1,6 +1,6 @@
 .browse-files{
   .browse-files-search {
-
+    padding-top: 30px;
     text-align: center;
     .search-button{
       width: 100%;
@@ -9,7 +9,6 @@
       font-weight: bold;
       line-height: 39px;
     }
-      padding: 30px;
     .react-datepicker {
       font-size: 1em;
     }
@@ -41,7 +40,5 @@
       right: 1em;
     }
 
-    input{
-    }
   }
 }

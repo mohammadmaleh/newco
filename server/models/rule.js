@@ -26,6 +26,15 @@ let Rule =  mongoose.model('Rule',{
         }
 
     },
+    createdBy:{
+        type: String,
+        required:true
+    },
+
+    createdAt:{
+        type:Number,
+        required:true
+    },
 
 
 

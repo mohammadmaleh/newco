@@ -67,7 +67,7 @@ export default class BrowseFiles extends Component{
 
     render(){
         return(
-            <div className=" browse-files-search light-grey-background">
+            <div className=" container browse-files-search light-grey-background">
                 <div className="row">
                     <div className="newco-form">
                         <div className="col-lg-2 ">

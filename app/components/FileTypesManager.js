@@ -1,5 +1,5 @@
 import React,{Component} from 'react'
-import HierarchicalTableRow from 'HierarchicalTableRow'
+import FileTypeListObject from 'FileTypeListObject'
 import FileTypesMangerPanel from 'FileTypesMangerPanel'
 import {deleteFileType} from 'fileTypeAPI'
 import AddFIleTypeModal from 'AddFIleTypeModal'
@@ -8,13 +8,13 @@ import{Modal} from 'react-bootstrap'
 export default class FileTypesManager extends Component{
     constructor(){
         super()
-        this.state={
-            editedFileType:{},
-            deletedFileType:{},
-            showDeleteModal:false,
-            showEditModal:false,
-            showAddModal:false,
-            selectedFileType:{}
+        this.state= {
+            editedFileType: {},
+            deletedFileType: {},
+            showDeleteModal: false,
+            showEditModal: false,
+            showAddModal: false,
+            selectedFileType: null
         }
     }
     handleSelectFileType(row){
@@ -54,13 +54,12 @@ export default class FileTypesManager extends Component{
             showEditModal:true
         })
     }
-    ShowOrHideAddModal(){
-
+    openAddModal(){
         this.setState({
-            showAddModal:!this.state.showAddModal
+            showAddModal:true
         })
     }
-    openAddModal(){
+    closeAddModal(){
         this.setState({
             showAddModal:true
         })
@@ -69,9 +68,13 @@ export default class FileTypesManager extends Component{
         let {selectedFileType} = this.state;
         deleteFileType(selectedFileType._id)
             .then((res)=>{
+                this.props.sharedData.notification({message:'Deleted successfully',type:'success'})
+
                 console.log(res)
 
             }).catch((e)=>{
+            this.props.sharedData.notification({message:'something went wrong try again later',type:'error'})
+
             console.log(e)
         })
         this.closeModal()
@@ -85,36 +88,98 @@ export default class FileTypesManager extends Component{
             });
             // render the main header of the tree
             return headers.map((row)=>{
-                return <HierarchicalTableRow key={row._id} row={row} handleSelectFileType={::this.handleSelectFileType}  sharedData={this.props.sharedData}/>
+                return <FileTypeListObject key={row._id} row={row} handleSelectFileType={::this.handleSelectFileType}  sharedData={this.props.sharedData}/>
             })
         }
 
 
     }    render(){
         return(
-            <div className="container file-type-manager">
-                <div className="row">
-                    <button className="btn btn-success" onClick={::this.ShowOrHideAddModal}>add file type</button>
-                </div>
-                <div className="row">
-                    <div className="col-lg-6 file-type-manager-browse ">
-                        {this.renderRows()}
+            <div className=" body-container light-grey-background">
+                <div className=" container">
+                    <div className="row">
+                        <div className="col-lg-8 ">
+                            <div  className="newco-browser white-background">
+                                <div className="browser-header">
+                                    <div className="row">
+                                        <div className="col-lg-8">
+                                            <h3>Browse File Type</h3>
+                                        </div>
+                                        <div className="col-lg-4">
+                                            <a className="newco-button main-button light-green-background" onClick={::this.openAddModal} >Add File Type</a>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="browser-body">
+                                    <div className="rows-container">
+                                        {
+                                            this.props.sharedData.fileTypeList.length>0  ?
+                                                <div>
+                                                    <div>
+                                                        <div className="row filetypeheader"  >
+                                                            <div className="col-lg-3">Name</div>
+                                                            <div className="col-lg-3">Rule</div>
+                                                            <div className="col-lg-3">Created At</div>
+                                                            <div className="col-lg-3">Created By</div>
+
+                                                        </div>
+                                                        {this.renderRows()}
+
+                                                    </div>
+
+                                                </div>
+
+
+
+                                                :
+                                                <div className="browser-empty">
+                                                    No File Types Available ....
+                                                </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="col-lg-4">
+                            <div  className="newco-panel white-background">
+                                <div className="panel-header">
+                                    <div className="row">
+                                        <div className="col-lg-8">
+                                            <h3>Panel</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="panel-body">
+                                    {this.state.selectedFileType ?
+                                        <FileTypesMangerPanel  openDeleteModal={::this.openDeleteModal} openEditModal={::this.openEditModal} selectedFileType={this.state.selectedFileType}/>
+
+                                        :
+                                        <div className="browser-empty-container">
+                                            <div className="browser-empty">
+                                                Waiting File Selection ...
+                                            </div>
+                                        </div>
+
+                                    }
+
+                                </div>
+                            </div>
+
+                        </div>
+
                     </div>
-                    <div className="col-lg-6 file-type-manager-panel">
-                        <FileTypesMangerPanel  openDeleteModal={::this.openDeleteModal} openEditModal={::this.openEditModal} selectedFileType={this.state.selectedFileType}/>
-                    </div>
                 </div>
-                {/*delete modal*/}
                 <Modal dialogClassName="delete-modal" show={this.state.showDeleteModal} onHide={::this.closeDeleteModal}>
-                    <Modal.Header closeButton>
-                        <Modal.Title><h3></h3></Modal.Title>
+                    <Modal.Header closeButton bsClass="light-red-background">
+                        <Modal.Title><h3>Delete</h3></Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         are you sure that you to delete {this.state.deletedFileType.name} ?
                     </Modal.Body>
                     <Modal.Footer>
-                        <button className="btn btn-info" onClick={::this.closeDeleteModal}>Close</button>
-                        <button className="btn btn-dange" onClick={::this.deleteRow}>Delete</button>
+                        <a className="newco-button dark-yellow-background" onClick={::this.closeDeleteModal}>Close</a>
+                        <a className="newco-button light-red-background" onClick={::this.deleteRow}>Delete</a>
                     </Modal.Footer>
                 </Modal>
                 {/*edit modal*/}
@@ -122,10 +187,12 @@ export default class FileTypesManager extends Component{
                     <EditFIleTypeModal selectedFileType={this.state.selectedFileType} closeEditModal={::this.closeEditModal} sharedData={this.props.sharedData}/>
                 </Modal>
                 {/*add modal*/}
-                <Modal show={this.state.showAddModal} onHide={::this.ShowOrHideAddModal}>
-                    <AddFIleTypeModal sharedData={this.props.sharedData} allRules={this.props.allRules} closeAddModal={::this.ShowOrHideAddModal}/>
+                <Modal show={this.state.showAddModal} onHide={::this.openAddModal}>
+                    <AddFIleTypeModal sharedData={this.props.sharedData} allRules={this.props.allRules} closeAddModal={::this.openAddModal}/>
                 </Modal>
+
             </div>
+
         )
     }
 }
