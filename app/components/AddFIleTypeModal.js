@@ -29,7 +29,7 @@ export default class AddFIleTypeModal extends  Component{
             if (father === '')
                 father=null;
             if (rule === '')
-                father=null;
+                rule=null;
 
             let createObject={
                 name,
