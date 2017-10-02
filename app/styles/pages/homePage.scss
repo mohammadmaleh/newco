@@ -1,10 +1,77 @@
 .home-page{
+  .tags-search,.description-search{
+    overflow: auto;
+    height: 40px;
+    max-height: 40px;
+    border-radius: 0px!important;
+  }
+  .nav-tabs{
+    background-color: $normal-blue;
+    li{
+      background-color: $dark-blue;
+      a{
+        &:active,&:hover,&:focus,&:visited,&:link {
+          background-color: $dark-blue;
+          color: white;
+          font-weight: normal;
+          border:none;
+        }
+        background-color: $dark-blue;
+        color: white;
+        font-weight: normal;
+        border:none;
+      }
+      &:active,&:hover,&:focus,&:visited,&:link{
+        background-color: $dark-blue;
+        a{
+          border:none;
+
+          background-color: $dark-blue;
+          color: white;
+          font-weight: normal;
+        }
+      }
+      color: white;
+      font-weight: normal;
+      &:last-of-type{
+        float: right!important;
+      }
+    }
+    .active{
+      background-color: $light-blue;
+
+      a{
+        background-color: $light-blue;
+        color: white;
+        font-weight: bold;
+        border:none;
+        &:active,&:hover,&:focus,&:visited,&:link {
+          background-color: $light-blue;
+          color: white;
+          font-weight: bold;
+          border:none;
+        }
+        }
+      &:active,&:hover,&:focus,&:visited,&:link{
+        background-color: $light-blue;
+        a{
+          border:none;
+
+          background-color: $light-blue;
+          color: white;
+          font-weight: bold;
+        }
+      }
+      color: white;
+      font-weight: bold;
+    }
+
+  }
+
   position: absolute;
   width: 100%;
   height:100%;
-  background: #4b79a1; /* fallback for old browsers */
-  background: -webkit-linear-gradient(to right, #4b79a1, #283e51); /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to right, #4b79a1, #283e51); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
   .filter-div{
     height: 300px;
     background-color: red;
@@ -13,13 +80,8 @@
     height: 300px;
     background-color: grey;
   }
+  .browse-files-search{
 
-
-}
-.panel-heading{
-  background-color: red;
-  p,input,button{
-    float :left;
-    display: inline-block;
   }
+
 }

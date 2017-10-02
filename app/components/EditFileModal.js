@@ -28,7 +28,6 @@ export default class EditFileModal  extends Component{
 
         import('../../uploads/' + url)
             .then(res=>{
-                console.log(res)
                 that.setState({
                     image:res
                 })
@@ -52,7 +51,6 @@ export default class EditFileModal  extends Component{
     handleSubmitEditFile(){
         let{title,fileType,description,tags,_id,file,newFile} = this.state;
         if (title.length > 0 ){
-            console.log('here')
             if (fileType === '')
                 fileType = null;
             let EditObject = new FormData()
@@ -80,7 +78,6 @@ export default class EditFileModal  extends Component{
     renderImage(){
         let file =this.state;
         let extType = file.type
-        console.log(file)
         if (file.newFile)
             return <img src={file.newFile.preview} alt=""/>
         else {
@@ -153,7 +150,7 @@ export default class EditFileModal  extends Component{
                         </div>
                         <select name="fileType"  value={editForm.fileType ? editForm.fileType._id :''} onChange={::this.handleEditFormChanges}>
                             <option value="" selected> Any</option>
-                            {this.props.fileTypeList.map(fileType =>
+                            {this.props.sharedData.fileTypeList.map(fileType =>
                                 <option key={fileType._id} value={fileType._id}>{fileType.name}</option>
                             )};
                         </select>

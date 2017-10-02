@@ -16,20 +16,7 @@ export default class AddFIleModal extends Component{
         super();
         this.state = {
             filesArray:[],
-            fileTypeList:[]
         }
-    }
-    componentWillMount(){
-        getAllFileTypes()
-            .then((res)=>{
-
-                this.setState({
-                    fileTypeList:res.data.fileType
-                })
-            })
-            .catch((e)=>{
-
-            })
     }
 
     handleFilesChanges = (name,value,id) => {
@@ -76,11 +63,12 @@ export default class AddFIleModal extends Component{
 
     }
     renderFile(){
-        let {filesArray,fileTypeList} = this.state
+        let {filesArray} = this.state
+        let {sharedData} = this.props
         if(filesArray.length>0){
             return filesArray.map((file)=>{
                 return <div className="list-group" key={file.id}>
-                        <FileObject file={file} fileTypeList={fileTypeList} handleRemoveFile={::this.handleRemoveFile} handleFilesChanges={::this.handleFilesChanges}/>
+                        <FileObject file={file} sharedData={sharedData} handleRemoveFile={::this.handleRemoveFile} handleFilesChanges={::this.handleFilesChanges}/>
                 </div>
             })
         }

@@ -80,7 +80,7 @@ export default class FileObject extends Component{
 
                 <select name="fileType" onChange={::this.handleFormChange}>
                     <option value="" selected> Any</option>
-                    {this.props.fileTypeList.map(fileType =>
+                    {this.props.sharedData.fileTypeList.map(fileType =>
                         <option key={fileType._id} value={fileType._id}>{fileType.name}</option>
                     )};
                 </select>

@@ -8,29 +8,11 @@ export default class AddFileType extends Component{
         super()
         this.state= {
             fileTypeList:[],
-            roles:[],
+            rule:[],
             allRules:[],
             rule:""
         }
 
-    }
-    componentWillReceiveProps(nextProps) {
-        this.setState({fileTypeList: nextProps.fileTypeList});
-    }
-    componentWillMount(){
-        this.refreshAllRules()
-    }
-    refreshAllRules(){
-        getAllRules()
-            .then( (res) =>{
-                console.log(res)
-                this.setState({
-                    allRules:res.data.rule
-                })
-            })
-            .catch((e)=>{
-                console.log(e)
-            })
     }
 
     handleFormChange = (event) => {

@@ -236,7 +236,7 @@ app.delete('/api/users/me/token',authenticate,(req,res)=>{
 })
 
 app.post('/api/fileType',(req,res)=>{
-    let body = _.pick(req.body , ['name','roles','createdBy','createdAt','father'])
+    let body = _.pick(req.body , ['name','rule','createdBy','createdAt','father'])
     var fileType = new FileType(body)
     fileType.save().then((doc)=>{
         res.send(doc)
@@ -247,6 +247,32 @@ app.post('/api/fileType',(req,res)=>{
 })
 app.get('/api/fileType',(req,res)=>{
     FileType.find({})
+        .populate({
+            path: 'rule',
+            model: 'Rule',
+
+         })
+        .then((fileType)=>{
+            if(!fileType){
+                return res.status(404).send()
+            }
+            res.send( {fileType})
+        })
+        .catch((e)=>{
+            res.status(400).send(e)
+        })
+
+});
+
+app.get('/api/availableFileType',(req,res)=>{
+    FileType.find({
+        deleted:false
+    })
+        .populate({
+            path: 'rule',
+            model: 'Rule',
+
+         })
         .then((fileType)=>{
             if(!fileType){
                 return res.status(404).send()
@@ -263,9 +289,7 @@ app.delete('/api/fileType/:id',(req,res)=>{
     if (!ObjectID.isValid(id)){
         return res.status(404).send();
     }
-    FileType.findOneAndRemove({
-        _id:id,
-    })
+    FileType.findOneAndUpdate({_id:id,},{deleted:true},{new:true})
         .then((fileType)=>{
             if(!fileType){
                 return res.status(404).send()
@@ -278,13 +302,11 @@ app.delete('/api/fileType/:id',(req,res)=>{
 });
 app.patch('/api/fileType/:id',(req,res)=>{
     let id = req.params.id;
-    let body =  _.pick(req.body, ['name','createdBy','createdAt','father','roles']);
+    let body =  _.pick(req.body, ['name','createdBy','createdAt','father','rule']);
     if (!ObjectID.isValid(id)){
         return res.status(404).send();
     }
-
-
-
+    console.log(body)
     FileType.findOneAndUpdate({_id:id},{$set:body},{new:true})
         .then((filetype)=>{
             if(!filetype){
@@ -353,8 +375,8 @@ app.get('/api/file',(req,res)=>{
 app.post('/api/searchFiles',(req,res)=>{
     let body = _.pick(req.body,['title','startDate','endDate','description','tags','uploadedBy','fileType'])
 
-    body.startDate = moment.unix(body.startDate).startOf('day').unix();
-    body.endDate = moment.unix(body.endDate).endOf('day').unix();
+    body.startDate = moment.unix(body.startDate).add(3, 'hours').startOf('day').unix();
+    body.endDate = moment.unix(body.endDate).add(3, 'hours').endOf('day').unix();
 
     let searchQuery = {
         uploadedAt: { $gt: body.startDate,$lt: body.endDate },
@@ -428,12 +450,12 @@ app.patch('/api/file/:id',(req,res)=>{
 
 
     File.findOneAndUpdate({_id:id},{$set:body},{new:true})
-        .then((fileType)=>{
-            if(!fileType){
+        .then((file)=>{
+            if(!file){
 
                 return res.status(404).send()
             }
-            res.send( fileType)
+            res.send( file)
         })
         .catch((e)=>{
             res.status(400).send(e)

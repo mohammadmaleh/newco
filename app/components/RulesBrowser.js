@@ -13,7 +13,7 @@ export default class RulesBrowser extends Component{
     render(){
         return(
             <div>
-                {this.props.allRules.map(rule=>{
+                {this.props.sharedData.rulesList.map(rule=>{
                     return <li onClick={()=>{this.props.handleSelectRule(rule)}} key={rule._id}>{rule.name}</li>
                 })}
             </div>

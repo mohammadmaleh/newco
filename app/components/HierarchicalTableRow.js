@@ -12,7 +12,8 @@ export default class HierarchicalTableRow extends Component {
     }
     // here im checking if the row has children to render the collapse icon, I think there should be a better way to do it than this way, but im short in time
     componentWillMount(){
-        let {row,fileTypeList} = this.props;
+        let {row,sharedData} = this.props;
+        let {fileTypeList} = sharedData;
         let children = fileTypeList.filter( object => {
             return  (object.father && object.father === row._id);
         });
@@ -22,7 +23,8 @@ export default class HierarchicalTableRow extends Component {
     }
     // function to find this row's children, then render each children using the same component, nodes of the children are unlimited
     findChildren(){
-        let {row,fileTypeList} = this.props;
+        let {row,sharedData} = this.props;
+        let {fileTypeList} = sharedData;
 
         // pick the children of this row
         let children = fileTypeList.filter( object => {
@@ -33,7 +35,7 @@ export default class HierarchicalTableRow extends Component {
         if (children.length > 0 ){
             return children.map((row)=>{
                 return <div className="list-group" key={row._id}>
-                    <HierarchicalTableRow  handleDeleteFileType ={this.props.handleDeleteFileType} handleEditFileType={this.props.handleEditFileType} row={row}  fileTypeList={fileTypeList}/>
+                    <HierarchicalTableRow  handleSelectFileType ={this.props.handleSelectFileType}  row={row}  sharedData={sharedData}/>
                 </div>
             })
         }
@@ -47,19 +49,7 @@ export default class HierarchicalTableRow extends Component {
         let {expanded} = this.state;
         this.setState({expanded:!expanded});
     }
-    editRow(e){
-        e.stopPropagation()
-        let {row} = this.props;
 
-        this.props.handleEditFileType(row);
-    }
-
-    deleteRow(e){
-        e.stopPropagation()
-        let {row} = this.props;
-
-        this.props.handleDeleteFileType(row);
-    }
     render(){
         let {row} = this.props;
         let {hasChildren,expanded} = this.state;
@@ -69,7 +59,7 @@ export default class HierarchicalTableRow extends Component {
                 <Panel
                     // i think the header is ugly and should be shortened in another component, but header property of Panel component didn't accept react components!!
                     header={
-                       <div className="row" onClick={this.handleExpand}>
+                       <div className="row" onClick={()=>{this.props.handleSelectFileType(row)}}>
 
 
                                {hasChildren ? <Glyphicon className={" pull-left expand-icon " + (expanded ? 'expanded':'')} glyph="menu-right"/> :<div className="empty-space">&nbsp;</div> }
@@ -78,10 +68,6 @@ export default class HierarchicalTableRow extends Component {
 
                            <a className="col-lg-3 col-md-3 col-sm-3 col-xs-3">{row.createdBy}</a>
                            <a className="col-lg-3 col-md-3 col-sm-5 col-xs-5">{row.createdAt}</a>
-
-                           <button className="btn btn-info" onClick={::this.editRow}>Edit</button>
-                           <button className="btn btn-danger" onClick={::this.deleteRow}>Delete</button>
-
 
                        </div>
 

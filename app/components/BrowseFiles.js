@@ -9,6 +9,7 @@ import {getUserInfo} from 'storage'
 import AddFileModal from 'AddFileModal'
 import EditFileModal from 'EditFileModal'
 import {downloadFile} from 'filesApi'
+import {Accordion,Panel} from 'react-bootstrap'
 
 export default class BrowseFiles extends Component{
     constructor(props){
@@ -17,7 +18,7 @@ export default class BrowseFiles extends Component{
             title:'',
             startDate:'',
             endDate:'',
-            fileTypeList:[],
+
             showBrowser:false,
             selectedBrowseFile:null,
             files:[],
@@ -40,9 +41,7 @@ export default class BrowseFiles extends Component{
         }
 
     }
-    componentWillReceiveProps(nextProps) {
-        this.setState({fileTypeList: nextProps.fileTypeList});
-    }
+
 
 
     showBrowser(files){
@@ -53,14 +52,15 @@ export default class BrowseFiles extends Component{
     }
 
     renderRows(){
-        let {fileTypeList,files} = this.state;
+        let {files} = this.state;
+        let {fileTypeList} = this.props.sharedData
         //pick up the main headers of the tree
         let headers = fileTypeList.filter(object => {
             return !object.father;
         });
         // render the main header of the tree
         return headers.map((row)=>{
-            return <BrowsingRow key={row._id} row={row}  handleBrowseFile={::this.handleBrowseFile}  fileTypeList={fileTypeList} files={files}/>
+            return <BrowsingRow key={row._id} row={row}  handleBrowseFile={::this.handleBrowseFile}  sharedData={this.props.sharedData} files={files}/>
         })
 
     }
@@ -75,6 +75,7 @@ export default class BrowseFiles extends Component{
         })
     }
     showAddFileModal(){
+        this.props. sharedData.refreshRulesAndFileTypes()
         this.setState({
             showAddFileModal:true
         })
@@ -175,34 +176,87 @@ export default class BrowseFiles extends Component{
         return(
             <div className="browse-files">
 
-                <BrowseFileSearch showBrowser={::this.showBrowser}fileTypeList={this.props.fileTypeList}/>
-                <button className="btn-success btn " onClick={::this.showAddFileModal}>Add files</button>
-                {
-                    this.state.showBrowser  ?
+                <BrowseFileSearch showBrowser={::this.showBrowser} sharedData={this.props.sharedData}/>
+                <div className=" light-grey-background">
+                    <div className=" container">
                         <div className="row">
-                            <div className="col-lg-8">
-                                {this.findFiles()}
+                            <div className="col-lg-8 ">
+                                <div  className="newco-browser white-background">
+                                    <div className="browser-header">
+                                        <div className="row">
+                                            <div className="col-lg-8">
+                                                <h3>Browse Files</h3>
+                                            </div>
+                                            <div className="col-lg-4">
+                                                <a className="newco-button main-button light-green-background" onClick={::this.showAddFileModal}>Add Files</a>
 
-                                {this.renderRows()}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="browser-body">
+                                        <div className="rows-container">
+                                            {
+                                                this.state.showBrowser  ?
+                                                    <div>
+                                                        <div>
+                                                            {this.findFiles()}
+
+                                                            {this.renderRows()}
+                                                        </div>
+
+                                                    </div>
+
+
+
+                                                    :
+                                                    <div className="browser-empty">
+                                                        Waiting for Search results ....
+                                                    </div>
+                                            }
+
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
                             </div>
                             <div className="col-lg-4">
-                                {this.state.selectedBrowseFile ?
-                                    <BrowsingPanel file={this.state.selectedBrowseFile} showEditModal={::this.showEditModal} showDeleteModal={::this.showDeleteModal}/>
-                                :''}
+                                <div  className="newco-panel white-background">
+                                    <div className="panel-header">
+                                        <div className="row">
+                                            <div className="col-lg-8">
+                                                <h3>Panel</h3>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div className="panel-body">
+                                        {this.state.selectedBrowseFile ?
+                                            <BrowsingPanel file={this.state.selectedBrowseFile} showEditModal={::this.showEditModal} showDeleteModal={::this.showDeleteModal}/>
+                                            :
+                                            ''
+                                        }
+
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
-                        :''
-                }
-                <Modal show={this.state.showAddFileModal} bsSize="large" onHide={::this.closeAddFileModal}>
-                    <AddFileModal fileTypeList={this.state.fileTypeList} closeAddFileModal={::this.closeAddFileModal}/>
+
+                    </div>
+
+                </div>
+                <Modal dialogClassName="add-modal" show={this.state.showAddFileModal} bsSize="large" onHide={::this.closeAddFileModal}>
+                    <AddFileModal sharedData={this.props.sharedData} closeAddFileModal={::this.closeAddFileModal}/>
 
                 </Modal>
 
 
 
 
-                <Modal show={this.state.showEditModal} onHide={::this.closeEditModal}>
-                    <EditFileModal editForm={this.state.editForm} fileTypeList={this.state.fileTypeList} closeEditModal={::this.closeEditModal}/>
+                <Modal dialogClassName="edit-modal" show={this.state.showEditModal} onHide={::this.closeEditModal}>
+                    <EditFileModal editForm={this.state.editForm} sharedData={this.props.sharedData} closeEditModal={::this.closeEditModal}/>
 
                 </Modal>
 
@@ -210,7 +264,7 @@ export default class BrowseFiles extends Component{
 
 
 
-                <Modal show={this.state.showDeleteModal} onHide={::this.closeDeleteModal}>
+                <Modal  dialogClassName="delete-modal" show={this.state.showDeleteModal} onHide={::this.closeDeleteModal}>
                     <Modal.Header closeButton>
                         <Modal.Title>delete</Modal.Title>
                     </Modal.Header>

@@ -7,7 +7,7 @@ export default class AddFileType extends Component{
         super()
         this.state= {
             fileTypeList:[],
-            roles:[],
+            rule:[],
             name:'',
             createdAt:'',
             createdBy:'',
@@ -50,6 +50,7 @@ export default class AddFileType extends Component{
             patchFileTypes(id,createObject)
                 .then((res)=>{
                     console.log(res)
+
                 })
                 .catch((e)=>{
 

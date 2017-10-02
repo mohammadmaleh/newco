@@ -14,7 +14,9 @@ export default class BrowsingRow extends Component {
     }
     // here im checking if the row has children to render the collapse icon, I think there should be a better way to do it than this way, but im short in time
     componentWillMount(){
-        let {row,fileTypeList,files} = this.props;
+
+        let {row,sharedData,files} = this.props;
+        let {fileTypeList} = sharedData
         let children = fileTypeList.filter( object => {
             return  (object.father && object.father === row._id);
         });
@@ -29,7 +31,8 @@ export default class BrowsingRow extends Component {
     }
     // function to find this row's children, then render each children using the same component, nodes of the children are unlimited
     findChildren(){
-        let {row,fileTypeList,files} = this.props;
+        let {row,sharedData,files} = this.props;
+        let {fileTypeList} = sharedData
 
         // pick the children of this row
         let children = fileTypeList.filter( object => {
@@ -41,7 +44,7 @@ export default class BrowsingRow extends Component {
 
             return children.map((row)=>{
                 return <div className="list-group" key={row._id}>
-                    <BrowsingRow  handleDeleteFileType ={this.props.handleDeleteFileType} handleBrowseFile={this.props.handleBrowseFile} handleEditFileType={this.props.handleEditFileType} row={row}  files={files} fileTypeList={fileTypeList}/>
+                    <BrowsingRow  handleDeleteFileType ={this.props.handleDeleteFileType} handleBrowseFile={this.props.handleBrowseFile} handleEditFileType={this.props.handleEditFileType} row={row}  files={files} sharedData={this.props.sharedData}/>
                 </div>
             })
         }

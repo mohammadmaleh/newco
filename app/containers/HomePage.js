@@ -3,50 +3,94 @@ import {Tab,Tabs} from 'react-bootstrap'
 import BrowseFiles from 'BrowseFiles'
 import FileTypesManager from 'FileTypesManager'
 import RulesManager from 'RulesManager'
-
-import Header from 'Header'
 import {getAllFileTypes} from 'fileTypeAPI'
+import {getAllRules} from 'rulesAPI'
+import NotificationSystem from 'react-notification-system'
 
 export default class HomePage extends Component{
     constructor(){
         super()
         this.state={
-            fileTypeList:[]
-        }
-    }
 
-    componentWillMount(e){
+            sharedData : {
+                fileTypeList : [],
+                rulesList:[],
+                refreshRulesAndFileTypes: ::this.refreshRulesAndFileTypes,
+                notification: ::this.notification
+            }
+        }
+        this._notificationSystem = null
+    }
+    notification(message) {
+
+        this._notificationSystem.addNotification({
+            message: message.message,
+            level: message.type,
+            title:message.type,
+            autoDismiss:3
+        });
+    }
+    componentWillMount(){
         $('.tab-header').click(function (e) {
             e.preventDefault()
             $(this).tab('show')
         })
+        this.refreshRulesAndFileTypes()
+
+    }
+    componentDidMount(){
+        this._notificationSystem = this.refs.notificationSystem;
+    }
+    refreshRulesAndFileTypes(){
         getAllFileTypes()
             .then((res)=>{
-                console.log(res)
+                let{sharedData} = this.state
                 this.setState({
-                    fileTypeList:res.data.fileType
+
+                    sharedData:{
+                        ...sharedData,
+                        fileTypeList:res.data.fileType
+                    },
+
                 })
             })
             .catch((e)=>{
 
             })
+        getAllRules()
+            .then((res)=>{
+                let{sharedData} = this.state
 
+                this.setState({
+                    sharedData:{
+                        ...sharedData,
+                        rulesList:res.data.rule
+                    },
+
+                })
+
+
+            })
+            .catch((e)=>{
+                console.log(e)
+            })
     }
-
-
     render(){
         return (
-            <div>
+            <div className="home-page">
+                <NotificationSystem ref="notificationSystem" />
                 <Tabs defaultActiveKey={1} id="uncontrolled-tab-example">
                     <Tab eventKey={1} title="Browse Files">
-                        <BrowseFiles fileTypeList={this.state.fileTypeList}/>
+                        <BrowseFiles sharedData={this.state.sharedData} fileTypeList={this.state.fileTypeList}/>
                     </Tab>
                     <Tab eventKey={2} title="Manage File Types">
-                        <FileTypesManager fileTypeList={this.state.fileTypeList}/>
+                        <FileTypesManager  sharedData={this.state.sharedData} fileTypeList={this.state.fileTypeList}/>
                     </Tab>
                     <Tab eventKey={3} title="Manage Rules">
-                        <RulesManager/>
+                        <RulesManager sharedData={this.state.sharedData}/>
                     </Tab>
+                    <div className="pull-right" id="log-out" title="Logout">
+                    </div>
                 </Tabs>
 
             </div>

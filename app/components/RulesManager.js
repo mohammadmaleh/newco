@@ -5,12 +5,11 @@ import React,{Component} from 'react'
 import {Modal} from 'react-bootstrap'
 import RulesBrowser from 'RulesBrowser'
 import RulesPanel from 'RulesPanel'
-import {getAllRules,postRule,patchRule,deleteRule} from 'rulesAPI'
+import {postRule,patchRule,deleteRule} from 'rulesAPI'
 export default class RulesManager extends Component{
     constructor(){
         super()
         this.state = {
-            allRules :[],
             showAddRuleModal:false,
             showDeleteRuleModal:false,
             showEditRuleModal:false,
@@ -35,26 +34,6 @@ export default class RulesManager extends Component{
                 fileExtensions:{}
             }
         }
-    }
-    refreshAllRules(){
-            console.log('jack')
-        getAllRules()
-            .then(res=>{
-                if (res.data){
-                    this.setState({
-                        allRules:res.data.rule
-                    })
-                }
-                else {
-
-                }
-            })
-            .catch(e=>{
-                console.log(e)
-            })
-    }
-    componentWillMount(){
-        this.refreshAllRules()
     }
     handleSelectRule(rule){
         this.setState({
@@ -160,17 +139,15 @@ export default class RulesManager extends Component{
             }
         }
         return extentionsHtml.map(ext=>{
-            return ext
+            return <div key={ext}>ext</div>
         })
     }
     renderEditExtensions(){
         let {fileExtensions} = this.state.editRuleForm
         let extentionsHtml = []
 
-        console.log(this.state.editRuleForm)
         for (var key in fileExtensions) {
             if (fileExtensions.hasOwnProperty(key)) {
-                console.log(this.state.editRuleForm.fileExtensions[key])
                 extentionsHtml.push(
                     <div className="form-control">
                         {key}
@@ -180,7 +157,7 @@ export default class RulesManager extends Component{
             }
         }
         return extentionsHtml.map(ext=>{
-            return ext
+            return <div key={ext}>ext</div>
         })
     }
     closeAddRuleModal(){
@@ -220,8 +197,7 @@ export default class RulesManager extends Component{
         let {addRuleForm} = this.state
         postRule(addRuleForm)
             .then(res =>{
-                console.log(res)
-                this.refreshAllRules()
+                this.props.sharedData.refreshRulesAndFileTypes()
             })
             .catch(e => {
                 console.log(e)
@@ -232,8 +208,9 @@ export default class RulesManager extends Component{
         deleteRule(selectedRule._id)
             .then(res =>{
                  console.log(res)
-                this.refreshAllRules()
-             })
+                this.props.sharedData.refreshRulesAndFileTypes()
+
+            })
             .catch(e =>{
                 console.log(e)
             })
@@ -243,14 +220,16 @@ export default class RulesManager extends Component{
         let id = selectedRule._id;
         patchRule(id,editRuleForm)
             .then(res =>{
-                this.refreshAllRules()
+                this.props.sharedData.refreshRulesAndFileTypes()
+
             })
             .catch(e =>{
                 console.log(e)
             })
     }
     render(){
-        let {addRuleForm,editRuleForm,allRules,selectedRule}= this.state
+        let {addRuleForm,editRuleForm,selectedRule}= this.state
+
         return(
             <div>
                 <div className="row">
@@ -258,7 +237,7 @@ export default class RulesManager extends Component{
                 </div>
                 <div className="row">
                     <div className="col-lg-6">
-                        <RulesBrowser allRules={allRules} handleSelectRule={::this.handleSelectRule}/>
+                        <RulesBrowser sharedData={this.props.sharedData} handleSelectRule={::this.handleSelectRule}/>
                     </div>
                     <div className="col-lg-6">
                         <RulesPanel showEditRuleModal={::this.showEditRuleModal} showDeleteRuleModal={::this.showDeleteRuleModal}   selectedRule={selectedRule}/>

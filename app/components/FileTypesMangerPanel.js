@@ -4,47 +4,23 @@ import EditFileType from 'EditFileType'
 export default class FileTypesMangerPanel extends Component{
     constructor(){
         super()
-        this.state = {
-            name:'',
-            father:'',
-            showAddFileType:false,
-            showEditFileType:false
 
-        }
-    }
-    componentWillReceiveProps(nextProps) {
-        if(nextProps.editedFileType){
-            this.setState({
-                showAddFileType:false,
-                showEditFileType:true
-
-            })
-
-        }
-
-    }
-    showAddfileType(){
-        this.setState({
-            showAddFileType:true,
-            showEditFileType:false
-
-        })
     }
     render(){
         return(
             <div>
-                <div className="row">
-                    <button className="btn btn-success" onClick={::this.showAddfileType}> Add file type </button>
-                </div>
-                {
-                    this.state.showAddFileType ?  <AddFileType fileTypeList={this.props.fileTypeList} /> :''
-                }
-                {
-                this.state.showEditFileType ?  <EditFileType  editedFileType={this.props.editedFileType} fileTypeList={this.props.fileTypeList} typeFile={this.props.editedFileType}/>:''
+                name:{this.props.selectedFileType.name}
+                name:{this.props.selectedFileType.createdBy}
+                name:{this.props.selectedFileType.createdAt}
+                {/*{   this.props.selectedFileType.rule  ?*/}
+                    {/*this.props.selectedFileType.rule.fileExtensions.map(rule=> {*/}
+                    {/*return rule*/}
+                    {/*})*/}
+                {/*:''}*/}
+                father:{this.props.selectedFileType.father}
 
-                }
-
-
+                <button className="btn btn-info" onClick={()=>{this.props.openEditModal()}}>Edit</button>
+                <button className="btn btn-info" onClick={()=>{this.props.openDeleteModal()}}>Delete</button>
             </div>
         )
     }

@@ -28,6 +28,10 @@ let FileType =  mongoose.model('FileType',{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'FileType'
 
+    },
+    deleted:{
+        type:Boolean,
+        default:false
     }
 
 })

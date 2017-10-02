@@ -1,0 +1,51 @@
+.newco-browser{
+  border:1px solid $dark-grey;
+  -webkit-box-shadow: 6px 6px 36px -10px rgba(0,0,0,0.75);
+  -moz-box-shadow: 6px 6px 36px -10px rgba(0,0,0,0.75);
+  box-shadow: 6px 6px 36px -10px rgba(0,0,0,0.75);
+  margin-top: 10px;
+  .browser-header{
+    padding: 15px;
+    background-color: $normal-blue;
+    h3{
+      color: white;
+      line-height: 10px;
+    }
+
+
+  }
+  .browser-body{
+    padding: 10px;
+    .rows-container{
+      overflow: auto;
+      height: 400px;
+      border: 1px solid $light-grey;
+      border-radius: 5px;
+      .browser-empty{
+        padding:20px;
+        font-size: 20px;
+      }
+    }
+  }
+
+}
+.newco-panel{
+  border:1px solid $dark-grey;
+  -webkit-box-shadow: 6px 6px 36px -10px rgba(0,0,0,0.75);
+  -moz-box-shadow: 6px 6px 36px -10px rgba(0,0,0,0.75);
+  box-shadow: 6px 6px 36px -10px rgba(0,0,0,0.75);
+  margin-top: 10px;
+
+  .panel-header{
+    padding: 15px;
+    background-color: $normal-blue;
+    h3{
+      color: white;
+      line-height: 10px;
+    }
+    a{
+      margin-top: 10px;
+    }
+
+  }
+}

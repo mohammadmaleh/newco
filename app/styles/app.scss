@@ -1,10 +1,13 @@
 @import "base/variables";
 
 // foundation
-
+@import "base/variables";
+@import "base/common";
+@import "components/browser";
 @import "pages/loginPage";
-@import "common/header";
 @import "pages/homePage";
+@import "pages/homePage";
+
 @import "components/browseFile";
 @import '../../node_modules/react-datepicker/dist/react-datepicker.css';
 @import '../../node_modules/react-tagsinput/react-tagsinput.css';
@@ -20,6 +23,7 @@ html{
   font-weight: 300;
   font-size: 20px;
   text-rendering: optimizeLegibility;
+  line-height: 125%;
 }
 @-webkit-keyframes autofill {
   to {
