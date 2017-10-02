@@ -187,8 +187,8 @@ export default class FileTypesManager extends Component{
                     <EditFIleTypeModal selectedFileType={this.state.selectedFileType} closeEditModal={::this.closeEditModal} sharedData={this.props.sharedData}/>
                 </Modal>
                 {/*add modal*/}
-                <Modal show={this.state.showAddModal} onHide={::this.openAddModal}>
-                    <AddFIleTypeModal sharedData={this.props.sharedData} allRules={this.props.allRules} closeAddModal={::this.openAddModal}/>
+                <Modal show={this.state.showAddModal} onHide={::this.closeAddModal}>
+                    <AddFIleTypeModal sharedData={this.props.sharedData} allRules={this.props.allRules} closeAddModal={::this.closeAddModal}/>
                 </Modal>
 
             </div>
