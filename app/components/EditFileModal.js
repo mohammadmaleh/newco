@@ -73,8 +73,8 @@ export default class EditFileModal  extends Component{
             return <img src={file.newFile.preview} alt=""/>
         else {
             if (extType.includes("image")){
-                // return <img src={file.image} alt=""/>
-                return <img src={require('../assets/images/pogba.png')} alt=""/>
+                return <img src={file.image} alt=""/>
+                // return <img src={require('../assets/images/pogba.png')} alt=""/>
 
             }
 

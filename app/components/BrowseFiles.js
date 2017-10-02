@@ -119,7 +119,7 @@ export default class BrowseFiles extends Component{
     }
     handleDownloadFile(id){
         console.log('downloading')
-        window.open('http://localhost:3000/api/download/'+id)
+        window.open('/api/download/'+id)
         // downloadFile(id)
         //     .then(res => {
         //         console.log(res)
@@ -146,10 +146,14 @@ export default class BrowseFiles extends Component{
                     return <div className="list-group" key={row._id}>
                         {/*<FileListObject  handleDeleteFileType ={this.props.handleDeleteFileType} handleEditFileType={this.props.handleEditFileType} row={row}  fileTypeList={fileTypeList}/>*/}
                         <li className="list-group-item" onClick={(e)=>{    e.stopPropagation(); this.handleBrowseFile(row)}}>
-                            {row.title}
-                            {row.uploadedBy}
-                            {row.uploadedAt}
-                            <div onClick={()=>{this.handleDownloadFile(row._id)}}> download</div>
+                            <div className="row">
+                                <div className="col-lg-4">    {row.title}</div>
+                                <div className="col-lg-4">   {row.uploadedBy}</div>
+                                <div className="col-lg-4">  {moment.unix(row.uploadedAt).format('DD/MM/YYYY')}</div>
+                            </div>
+
+
+
                         </li>
                     </div>
                 })

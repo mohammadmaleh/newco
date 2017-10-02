@@ -42,8 +42,8 @@ export default class BrowsingPanel extends Component{
         let extType = file.type
         if(file.type){
             if (extType.includes("image")){
-                // return  <img src={'/'+file.filePath} alt=""/>
-                return  <img src={require('../assets/images/pogba.png')} alt=""/>
+                return  <img src={'/'+file.filePath} alt=""/>
+                // return  <img src={require('../assets/images/pogba.png')} alt=""/>
 
             }
 
