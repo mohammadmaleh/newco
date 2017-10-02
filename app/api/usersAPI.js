@@ -3,7 +3,7 @@ export const signUpAPI = (email,password,username)=>{
     console.log(email,password,username)
    return axios({
         method: 'post',
-        url: 'http://localhost:3000/api/users/signup',
+        url: '/api/users/signup',
         data: {
             email,
             password,
@@ -16,7 +16,7 @@ export const loginAPI = (username,password)=>{
    return axios({
         method: 'post',
         url: '' +
-        'http://localhost:3000/api/users/login',
+        '/api/users/login',
         data: {
             username,
             password,
