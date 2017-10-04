@@ -137,8 +137,23 @@ export default class RulesManager extends Component{
         })
     }
     showAddRuleModal(){
+
         this.setState({
-            showAddRuleModal:true
+            showAddRuleModal:true,
+            addRuleForm:{
+                name:'',
+                maxSize:1,
+                fileExtensions:{
+                    images:false,
+                    word:false,
+                    excel:false,
+                    pdf:false,
+                    mp3:false,
+                    mp4:false,
+                    fonts:false,
+                    zip:false,
+                }
+            }
         })
     }
     showDeleteRuleModal(){
@@ -158,19 +173,27 @@ export default class RulesManager extends Component{
         let {addRuleForm} = this.state
         addRuleForm.createdAt = moment().unix()
         addRuleForm.createdBy = getUserInfo().username
-        postRule(addRuleForm)
-            .then(res =>{
+        if (addRuleForm.name > 3 ){
+            postRule(addRuleForm)
+                .then(res =>{
 
-                this.props.sharedData.refreshRulesAndFileTypes()
-                this.closeAddRuleModal()
-                this.props.sharedData.notification({message:'your rule has been added',type:'success'})
+                    this.props.sharedData.refreshRulesAndFileTypes()
+                    this.closeAddRuleModal()
+                    this.props.sharedData.notification({message:'your rule has been added',type:'success'})
 
-            })
-            .catch(e => {
-                console.log(e)
-                this.props.sharedData.notification({message:'something went wrong try again later',type:'error'})
+                })
+                .catch(e => {
+                    console.log(e)
+                    this.props.sharedData.notification({message:'something went wrong try again later',type:'error'})
 
-            })
+                })
+        }
+        else
+        {
+            this.props.sharedData.notification({message:'name should be more than 3 characters',type:'error'})
+
+        }
+
     }
     handleDeleteRule(){
         let {selectedRule} = this.state;
@@ -191,20 +214,28 @@ export default class RulesManager extends Component{
     handleEditRule(){
         let {editRuleForm,selectedRule} =  this.state;
         let id = selectedRule._id;
-        patchRule(id,editRuleForm)
-            .then(res =>{
-                this.closeEditRuleModal()
-                this.props.sharedData.refreshRulesAndFileTypes()
-                this.props.sharedData.notification({message:'edited successfully',type:'error'})
+        if (editRuleForm.name>3 ){
+            patchRule(id,editRuleForm)
+                .then(res =>{
+                    this.closeEditRuleModal()
+                    this.props.sharedData.refreshRulesAndFileTypes()
+                    this.props.sharedData.notification({message:'edited successfully',type:'error'})
 
-            })
-            .catch(e =>{
-                this.props.sharedData.notification({message:'something went wrong try again later',type:'error'})
+                })
+                .catch(e =>{
+                    this.props.sharedData.notification({message:'something went wrong try again later',type:'error'})
 
-                console.log(e)
-            })
+                    console.log(e)
+                })
+
+        }
+        else {
+            this.props.sharedData.notification({message:'name should be more than 3 characters',type:'error'})
+
+        }
     }
     handelChangeAddRuleExtension(event){
+
             const target = event.target;
             const value = target.type === 'checkbox' ? target.checked : target.value;
             const name = target.name;

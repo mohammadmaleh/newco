@@ -61,7 +61,7 @@ export default class FileTypesManager extends Component{
     }
     closeAddModal(){
         this.setState({
-            showAddModal:true
+            showAddModal:false
         })
     }
     deleteRow() {
@@ -81,19 +81,16 @@ export default class FileTypesManager extends Component{
     }
     renderRows(){
         let {fileTypeList} = this.props.sharedData;
-        //pick up the main headers of the tree
         if (fileTypeList){
             let headers = fileTypeList.filter(object => {
                 return !object.father;
             });
-            // render the main header of the tree
             return headers.map((row)=>{
                 return <FileTypeListObject key={row._id} row={row} handleSelectFileType={::this.handleSelectFileType}  sharedData={this.props.sharedData}/>
             })
         }
-
-
-    }    render(){
+    }
+    render(){
         return(
             <div className=" body-container light-grey-background">
                 <div className=" container">
@@ -171,7 +168,7 @@ export default class FileTypesManager extends Component{
                     </div>
                 </div>
                 <Modal dialogClassName="delete-modal" show={this.state.showDeleteModal} onHide={::this.closeDeleteModal}>
-                    <Modal.Header closeButton bsClass="light-red-background">
+                    <Modal.Header closeButton >
                         <Modal.Title><h3>Delete</h3></Modal.Title>
                     </Modal.Header>
                     <Modal.Body>

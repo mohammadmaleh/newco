@@ -12,8 +12,7 @@ export default class EditFIleTypeModal extends  Component{
     }
     componentWillMount(){
         let selectedFileType = this.props.selectedFileType
-
-        if(!selectedFileType.rule._id )
+        if(!selectedFileType.rule )
             selectedFileType.rule = ''
         else
           selectedFileType.rule = selectedFileType.rule._id
@@ -23,8 +22,6 @@ export default class EditFIleTypeModal extends  Component{
         const target = event.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.name;
-
-
         this.setState({
             [name]: value
         });
@@ -33,7 +30,7 @@ export default class EditFIleTypeModal extends  Component{
         let{name,father,_id,rule} = this.state;
         console.log(rule)
         let{sharedData} = this.props
-        if (name.length>0 ){
+        if (name.length>3 ){
             if (father === '')
                 father=null;
             if(rule === '')
@@ -44,7 +41,6 @@ export default class EditFIleTypeModal extends  Component{
                 rule:rule
 
             }
-            console.log(createObject)
             patchFileTypes(_id,createObject)
                 .then((res)=>{
                     console.log(res)
@@ -58,7 +54,9 @@ export default class EditFIleTypeModal extends  Component{
 
                     console.log(e)
                 })
-
+        }
+        else{
+            this.sharedData.notification({message:'name must be more than 4 characters',type:'error'})
 
         }
     }
@@ -66,8 +64,6 @@ export default class EditFIleTypeModal extends  Component{
         const target = event.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.name;
-
-
         this.setState({
             [name]: value
         });
@@ -76,57 +72,41 @@ export default class EditFIleTypeModal extends  Component{
     render(){
         return (
             <div>
-
                 <Modal.Header closeButton>
                     <Modal.Title><h3>Edit File Type</h3></Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-
-                    <div className="row">
-
-                        <div className="add-filetype-form">
-                            <div className="form-control">
+                    <div className=" newco-form">
+                        <div className="row">
+                            <div className="col-lg-6">
                                 <label htmlFor="name">name</label>
-                                <input type="text" name="name" onChange={::this.handleFormChange} value={this.state.name}/>
+                                <input type="text"  className="newco-text-input" name="name" onChange={::this.handleFormChange} value={this.state.name}/>
                             </div>
-                            <div className="form-control">
+                            <div className="col-lg-6">
                                 <label htmlFor="father">father</label>
-                                <select name="father"  value={this.state.father} onChange={::this.handleFormChange}>
+                                <select name="father" className="newco-text-input" value={this.state.father} onChange={::this.handleFormChange}>
                                     <option value="" selected> none</option>
-                                    {this.props.sharedData.fileTypeList.map(fileType =>
+                                    {this.props.sharedData.availableFileTypes.map(fileType =>
                                         <option key={fileType._id} value={fileType._id}>{fileType.name}</option>
                                     )};
                                 </select>
-
-                            </div>
-                            <select name="rule" value={this.state.rule} onChange={::this.handleFormChange}>
-                                <option value="" selected> none</option>
-                                {this.props.sharedData.rulesList.map(rule =>
-                                    <option key={rule._id} value={rule._id}>{rule.name}</option>
-                                )};
-                            </select>
-
-                            <div className=" form-control">
-                                <label htmlFor="createdBy"> created by</label>
-                                <p>{this.state.createdBy}</p>
-                            </div>
-                            <div className=" form-control">
-                                <label htmlFor="createdBy"> created At</label>
-                                <p>{this.state.createdAt}</p>
-                            </div>
-                            <div className="form-control">
-                                <button className="btn-success" onClick={::this.editFileType}>Edit</button>
                             </div>
                         </div>
-
-
+                        <div className="row">
+                            <div className="col-lg-6">
+                                <select name="rule"  className="newco-text-input" value={this.state.rule} onChange={::this.handleFormChange}>
+                                    <option value="" selected> none</option>
+                                    {this.props.sharedData.rulesList.map(rule =>
+                                        <option key={rule._id} value={rule._id}>{rule.name}</option>
+                                    )};
+                                </select>
+                            </div>
+                        </div>
                     </div>
-
-
                 </Modal.Body>
                 <Modal.Footer>
-                    <button className="btn btn-info" onClick={()=>{this.props.closeEditModal()}}>Close</button>
-                    <button className="btn btn-success" onClick={::this.editFileType}>Edit</button>
+                    <a className="newco-button light-red-background" onClick={()=>{this.props.closeEditModal()}}>Close</a>
+                    <a className="newco-button dark-yellow-background" onClick={::this.editFileType}>Edit</a>
                 </Modal.Footer>
 
             </div>

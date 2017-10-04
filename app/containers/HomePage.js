@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
-import {Tab,Tabs} from 'react-bootstrap'
-import BrowseFiles from 'BrowseFiles'
-import FileTypesManager from 'FileTypesManager'
-import RulesManager from 'RulesManager'
-import {getAllFileTypes,availableFileTypes} from 'fileTypeAPI'
-import {getAllRules} from 'rulesAPI'
-import NotificationSystem from 'react-notification-system'
+import {Tab,Tabs} from 'react-bootstrap';
+import BrowseFiles from 'BrowseFiles';
+import FileTypesManager from 'FileTypesManager';
+import RulesManager from 'RulesManager';
+import {getAllFileTypes,availableFileTypes} from 'fileTypeAPI';
+import {getAllRules} from 'rulesAPI';
+import NotificationSystem from 'react-notification-system';
+import {getUserInfo,removeUserInfo} from 'storage';
 
 export default class HomePage extends Component{
     constructor(){
-        super()
+        super();
         this.state={
 
             sharedData : {
@@ -18,8 +19,11 @@ export default class HomePage extends Component{
                 refreshRulesAndFileTypes: ::this.refreshRulesAndFileTypes,
                 notification: ::this.notification
             }
-        }
+        };
         this._notificationSystem = null
+    }
+    logout(){
+        removeUserInfo()
     }
     notification(message) {
 
@@ -113,7 +117,7 @@ export default class HomePage extends Component{
         return (
             <div className="home-page">
                 <NotificationSystem ref="notificationSystem" />
-                <Tabs defaultActiveKey={1} id="uncontrolled-tab-example">
+                <Tabs defaultActiveKey={1} id="newco-tabs">
                     <Tab eventKey={1} title="Browse Files">
                         <BrowseFiles sharedData={this.state.sharedData} fileTypeList={this.state.fileTypeList}/>
                     </Tab>
@@ -123,10 +127,8 @@ export default class HomePage extends Component{
                     <Tab eventKey={3} title="Manage Rules">
                         <RulesManager sharedData={this.state.sharedData}/>
                     </Tab>
-                    <div className="pull-right" id="log-out" title="Logout">
-                    </div>
                 </Tabs>
-
+                <a href="/" className="logout" onClick={this.logout}>logout</a>
             </div>
         )
     }

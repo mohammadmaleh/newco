@@ -12,6 +12,12 @@ export const getUserInfo = ()=>{
     return data;
 
 }
+export const removeUserInfo = ()=>{
+ localStorage.removeItem('userInfo');
+
+}
+
+
 
 
 

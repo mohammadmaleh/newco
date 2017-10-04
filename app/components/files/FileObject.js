@@ -20,6 +20,7 @@ export default class FileObject extends Component{
     }
 
     handleChangeTags(tags) {
+        console.log(tags)
         this.setState({tags})
         this.props.handleFilesChanges('tags',tags,this.props.file.id)
     }
@@ -45,25 +46,25 @@ export default class FileObject extends Component{
         }
 
         else if(extType.includes("msword") || extType.includes("wordprocessingml")  ||extType.includes("ms-word")){
-            return  <img src={require('../assets/images/fileTypes/Doc.png')} alt=""/>
+            return  <img src={require('../../assets/images/fileTypes/DOC.png')} alt=""/>
         }
         else if(extType.includes("ms-excel") || extType.includes("spreadsheetml")  ||extType.includes("ms-excel")){
-            return  <img src={require('../assets/images/fileTypes/XLSX.png')} alt=""/>
+            return  <img src={require('../../assets/images/fileTypes/XLSX.png')} alt=""/>
         }
         else if(extType.includes("pdf")){
-            return  <img src={require('../assets/images/fileTypes/PDF.png')} alt=""/>
+            return  <img src={require('../../assets/images/fileTypes/PDF.png')} alt=""/>
         }
         else if(extType.includes("mp3")){
-            return  <img src={require('../assets/images/fileTypes/MP3.png')} alt=""/>
+            return  <img src={require('../../assets/images/fileTypes/MP3.png')} alt=""/>
         }
         else if(extType.includes("mp4")){
-            return  <img src={require('../assets/images/fileTypes/VIDEO.png')} alt=""/>
+            return  <img src={require('../../assets/images/fileTypes/VIDEO.png')} alt=""/>
         }
         else if( extType.includes("vnd.ms-fontobject")||extType.includes("font-woff")||extType.includes("font-woff")||extType.includes("svg+xml")||extType.includes("x-font-opentype")){
-            return  <img src={require('../assets/images/fileTypes/FONT.png')} alt=""/>
+            return  <img src={require('../../assets/images/fileTypes/FONT.png')} alt=""/>
         }
         else {
-            return  <img src={require('../assets/images/fileTypes/Blank.png')} alt=""/>
+            return  <img src={require('../../assets/images/fileTypes/Blank.png')} alt=""/>
 
         }
     }

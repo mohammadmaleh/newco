@@ -8,7 +8,7 @@ import {postFiles} from 'filesAPI'
 import moment from 'moment'
 import {getUserInfo} from 'storage'
 const uuid = require('uuid/v1');
-import FileObject from 'FileObject'
+import FileObject from './FileObject'
 import {getAllFileTypes} from 'fileTypeAPI'
 
 export default class AddFIleModal extends Component{
@@ -19,12 +19,13 @@ export default class AddFIleModal extends Component{
             showFilesList:false,
             fileType:null,
             fileExtensionsRulesString:'',
-            maxSize:99
+            maxSize:99,
+            errorMessage:''
         }
     }
     handleFilesChanges = (name,value,id) => {
 
-        let {filesArray} = this.state
+        let {filesArray} = this.state;
 
         filesArray.map(file=>{
             if(file.id === id) {
@@ -39,39 +40,43 @@ export default class AddFIleModal extends Component{
         });
     }
     handleFormChange = (event) => {
+
         event.preventDefault()
         const target = event.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.name;
+        console.log(this.state);
         this.setState({
             [name]: value,
             showDropZone:true,
             filesArray:[],
+            errorMessage:'',
+            fileExtensionsRulesString:''
+
 
         });
 
         this.props.sharedData.fileTypeList.map(fileType =>{
             if ( fileType.rule && fileType._id === value){
                 let {fileExtensions,maxSize} =fileType.rule;
-                let fileExtensionsRulesString = this.state;
+                let fileExtensionsRulesString = '';
                 if (fileExtensions.images)
-                    fileExtensionsRulesString+= 'image/jpeg, image/png,image/jpg,image/gif,image/svg+xml '
+                    fileExtensionsRulesString += 'image/jpeg, image/png,image/jpg ,';
                 if (fileExtensions.word)
-                    fileExtensionsRulesString+= 'application/msword , application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document '
+                    fileExtensionsRulesString += 'application/msword , application/msword , application/vnd.openxmlformats-officedocument.wordprocessingml.document ,';
 
                 if (fileExtensions.excel)
-                    fileExtensionsRulesString+= 'application/vnd.ms-excel , application/msexcel , application/x-msexcel ,application/x-ms-excel , application/xls , application/x-xls '
+                    fileExtensionsRulesString += 'application/vnd.ms-excel , application/msexcel , application/x-msexcel ,application/x-ms-excel , application/xls , application/x-xls ,'
                 if (fileExtensions.pdf)
-                    fileExtensionsRulesString+= 'application/pdf '
+                    fileExtensionsRulesString += 'application/pdf ,';
                 if (fileExtensions.mp3)
-                    fileExtensionsRulesString+= ' audio/mpeg, audio/mp3 , audio/mp3'
+                    fileExtensionsRulesString += ' audio/mpeg, audio/mp3 , audio/mp3 ,';
                 if (fileExtensions.mp4)
-                    fileExtensionsRulesString+= 'video/mp4 '
+                    fileExtensionsRulesString += 'video/mp4  ,';
                 if (fileExtensions.fonts)
-                    fileExtensionsRulesString+= 'image/jpeg, image/png,image/jpg '
+                    fileExtensionsRulesString += 'image/jpeg, image/png,image/jpg ,';
                 if (fileExtensions.zip)
-                    fileExtensionsRulesString += 'application/x-rar-compressed, application/octet-stream , application/zip, application/octet-stream '
-
+                    fileExtensionsRulesString += 'application/x-rar-compressed, application/octet-stream , application/zip, application/octet-stream ,';
                 this.setState({
                     fileExtensionsRulesString,
                     maxSize
@@ -84,8 +89,15 @@ export default class AddFIleModal extends Component{
     }
 
     handleAddFileChange(acceptedFiles, rejectedFiles){
-        let filesArray= this.state.filesArray
-
+        this.setState({
+            errorMessage:''
+        })
+        let filesArray= this.state.filesArray;
+        if (rejectedFiles.length>0){
+            this.setState({
+                errorMessage:rejectedFiles.length +' files are rejected due file type rule'
+            })
+        }
         acceptedFiles.map(file=>{
             filesArray.push({
                 id:uuid(),
@@ -100,18 +112,10 @@ export default class AddFIleModal extends Component{
         this.setState({
                 filesArray
         })
-        // let stateFiles= this.state.files
-        // files.map(file=>{
-        //     stateFiles.push(file)
-        // })
-        // this.setState({
-        //         files:stateFiles
-        // })
-
     }
     renderFile(){
-        let {filesArray} = this.state
-        let {sharedData} = this.props
+        let {filesArray} = this.state;
+        let {sharedData} = this.props;
         return filesArray.map((file)=>{
             return <div className="" key={file.id}>
                         <div className="col-lg-6">
@@ -130,11 +134,12 @@ export default class AddFIleModal extends Component{
         this.setState({filesArray})
     }
     handleSubmitFiles(){
-        let{filesArray} = this.state;
-        let validForm = true
+        let{filesArray ,fileType} = this.state;
+        let validForm = true;
         filesArray.map(file=>{
             if(file.title < 4)
-                validForm= false
+                validForm= false;
+
             if (file.fileType === '')
                 file.fileType = null;
         })
@@ -142,20 +147,22 @@ export default class AddFIleModal extends Component{
             let uploadObject;
 
             filesArray.map(file =>{
-                uploadObject = new FormData()
-                uploadObject.append('title',file.title)
-                uploadObject.append('fileType',file.fileType)
-                uploadObject.append('tags',file.tags)
-                uploadObject.append('uploadedAt',moment().unix())
-                uploadObject.append('uploadedBy',getUserInfo().username)
-                uploadObject.append('file',file.file)
-                uploadObject.append('type',file.type)
+                console.log(file.tags)
+
+                uploadObject = new FormData();
+                uploadObject.append('title',file.title);
+                uploadObject.append('fileType',fileType);
+                uploadObject.append('tags',file.tags);
+                uploadObject.append('uploadedAt',moment().unix());
+                uploadObject.append('uploadedBy',getUserInfo().username);
+                uploadObject.append('file',file.file);
+                uploadObject.append('type',file.type);
+                uploadObject.append('description',file.description);
                 postFiles(uploadObject)
                     .then((res)=>{
-                        this.props.closeAddFileModal()
+                        this.props.closeAddFileModal();
 
                         this.props.sharedData.notification({message:'Your files has been added successfully',type:'success'})
-                        console.log(res)
                     })
                     .catch((e)=>{
 
@@ -164,25 +171,29 @@ export default class AddFIleModal extends Component{
                     })
             })
         }
+        else {
+            this.props.sharedData.notification({message:'one of file titles is less than 4 characters',type:'error'})
+        }
     }
 
 
     render(){
-        let{showDropZone,filesArray} = this.state
+        let{showDropZone,filesArray} = this.state;
 
         return(
 
             <div>
 
                 <Modal.Header closeButton>
-                    <Modal.Title><h3>Add File</h3></Modal.Title>
+                    <Modal.Title><h3 className="inline-block">Add File</h3> <p className=" pull-right modal-error-message">{this.state.errorMessage}</p></Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <div className="row">
                         <div className="col-lg-4 newco-form">
                             <label htmlFor="">Select A file type</label>
                             <select name="fileType"  className="newco-text-input margin-bottom-15" onChange={::this.handleFormChange}>
-                                <option value="" selected> Any</option>
+                                <option disabled selected value> -- select an option -- </option>
+                                <option value=""> Any</option>
                                 {this.props.sharedData.availableFileTypes.map(fileType =>
                                     <option key={fileType._id} value={fileType._id}>{fileType.name}</option>
                                 )};
@@ -219,8 +230,8 @@ export default class AddFIleModal extends Component{
 
                 </Modal.Body>
                 <Modal.Footer>
-                    <a className="newco-button light-green-background margin-right-10" onClick={()=>{this.props.closeAddFileModal()}}>Close</a>
-                    <a className="newco-button light-red-background" onClick={::this.handleSubmitFiles}>Add</a>
+                    <a className="newco-button light-red-background margin-right-10" onClick={()=>{this.props.closeAddFileModal()}}>Close</a>
+                    <a className="newco-button light-green-background " onClick={::this.handleSubmitFiles}>Add</a>
                 </Modal.Footer>
 
             </div>

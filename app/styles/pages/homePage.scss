@@ -1,11 +1,28 @@
 .home-page{
+  .logout{
+    width: 5%;
+    float: right;
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 15px;
+    color: white;
+    background-color: $normal-blue;
+    ;
+    height: 39px;
+    padding-top: 8px;
+    font-weight: bold;
+    cursor: pointer;
+  }
   .tags-search,.description-search{
     overflow: auto;
     height: 40px;
     max-height: 40px;
     border-radius: 0px!important;
   }
+
   .nav-tabs{
+    width:95%;
     background-color: $normal-blue;
     li{
       background-color: $dark-blue;
@@ -33,9 +50,7 @@
       }
       color: white;
       font-weight: normal;
-      &:last-of-type{
-        float: right!important;
-      }
+
     }
     .active{
       background-color: $light-blue;

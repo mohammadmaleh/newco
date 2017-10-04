@@ -23,13 +23,19 @@ export default class FileTypesMangerPanel extends Component{
                             {this.props.selectedFileType.father? this.props.selectedFileType.father :'none'}
                         </div>
                     </div>
-
-                        <div>
+                    <div >
+                        <label>Rule</label>
+                        <div className="newco-info">
+                            {this.props.selectedFileType.rule? this.props.selectedFileType.rule.name :'none'}
+                        </div>
+                    </div>
+                    <div>
                         <label>Uploaded By:</label>
                         <div className="newco-info">
                             {this.props.selectedFileType.createdBy}
                         </div>
                     </div>
+
                     <div >
                         <label>Uploaded At:</label>
                         <div className="newco-info">

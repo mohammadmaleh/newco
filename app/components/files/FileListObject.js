@@ -4,7 +4,6 @@ import moment from 'moment'
 export default class FileListObject extends Component {
     constructor(){
         super();
-        // this.removeRow = this.removeRow.bind(this);
         this.handleExpand = this.handleExpand.bind(this);
         this.state={
             hasFilesChildren :false,
@@ -13,7 +12,6 @@ export default class FileListObject extends Component {
             files:[]
         }
     }
-    // here im checking if the row has children to render the collapse icon, I think there should be a better way to do it than this way, but im short in time
     componentWillMount(){
 
         let {row,sharedData,files} = this.props;
@@ -30,17 +28,17 @@ export default class FileListObject extends Component {
             hasFileTypeChildren:children.length>0
          })
     }
-    // function to find this row's children, then render each children using the same component, nodes of the children are unlimited
+    handleDownload(){
+
+    }
     findChildren(){
         let {row,sharedData,files} = this.props;
         let {fileTypeList} = sharedData
 
-        // pick the children of this row
         let children = fileTypeList.filter( object => {
             return object.father === row._id;
         });
 
-        // if this row has children render them using this same component, until there is no children left under this row
         if (children.length > 0 ){
 
             return children.map((row)=>{
@@ -51,10 +49,7 @@ export default class FileListObject extends Component {
         }
 
     }
-    // removeRow(){
-    //     let {row} = this.props;
-    //     this.props.removeRow(row.ID)
-    // }
+
     handleExpand(){
         let {expanded} = this.state;
         this.setState({expanded:!expanded});
@@ -65,28 +60,24 @@ export default class FileListObject extends Component {
 
     findFiles(){
         let {row,files} = this.props;
-        // pick the children of this row
 
         if(files){
             let childrenFiles = files.file.filter( object => {
                 return ( object.fileType && object.fileType._id === row._id);
             });
 
-            // // if this row has children render them using this same component, until there is no children left under this row
             if (childrenFiles.length > 0 ){
 
                 return childrenFiles.map((row)=>{
-                    return <ul className="list-group" key={row._id}>
-                        {/*<FileListObject  handleDeleteFileType ={this.props.handleDeleteFileType} handleEditFileType={this.props.handleEditFileType} row={row}  fileTypeList={fileTypeList}/>*/}
-                        <li className="list-group-item" onClick={()=>{this.props.handleBrowseFile(row)}}>
+                    return <li className="list-group-item" key={row._id} onClick={()=>{this.props.handleBrowseFile(row)}}>
                             <div className="row">
-                                <div className="col-lg-3"> {row.title}</div>
+                                <div className="col-lg-3 short-text" > {row.title}</div>
                                 <div className="col-lg-3"> {moment.unix(row.uploadedAt).format('DD/MM/YYYY')}</div>
                                 <div className="col-lg-3"> {row.uploadedBy}</div>
+                                <div className="col-lg-3" onClick={::this.handleDownload}> download</div>
                             </div>
 
                         </li>
-                    </ul>
                 })
             }
         }
@@ -96,23 +87,9 @@ export default class FileListObject extends Component {
 
 
     }
-    editRow(e){
-        e.stopPropagation()
-        let {row} = this.props;
-
-        this.props.handleEditFileType(row);
-    }
-
-    deleteRow(e){
-        e.stopPropagation()
-        let {row} = this.props;
-
-        this.props.handleDeleteFileType(row);
-    }
     render(){
         let {row} = this.props;
         let {hasFileTypeChildren,hasFilesChildren,expanded} = this.state;
-
         return(
             <Accordion bsClass="file-type-object" >
                 <Panel
@@ -127,7 +104,19 @@ export default class FileListObject extends Component {
                     }
                     eventKey={row.ID}>
 
-                    {this.findFiles()}
+                    <div className=" rule-list list-group" >
+                        <li className="list-group-item  normal-blue-background browse-file-header" >
+                            <div className="">
+                                <div className="col-lg-3 short-text" > Title</div>
+                                <div className="col-lg-3"> Uploaded At</div>
+                                <div className="col-lg-3"> Uploaded By</div>
+                                <div className="col-lg-3" onClick={::this.handleDownload}> download</div>
+                            </div>
+
+                        </li>
+
+                        {this.findFiles()}
+                    </div>
 
                     {this.findChildren()}
                 </Panel>

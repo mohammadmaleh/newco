@@ -5,7 +5,7 @@ import {searchFiles} from 'filesAPI'
 import moment from 'moment';
 export default class BrowseFiles extends Component{
     constructor(props){
-        super(props)
+        super(props);
         this.state={
             title:'',
             startDate:moment().add(-1, 'days'),
@@ -16,10 +16,17 @@ export default class BrowseFiles extends Component{
             uploadedBy:'',
         }
 
-        this.handleStartDateChange = this.handleStartDateChange.bind(this)
+        this.handleStartDateChange = this.handleStartDateChange.bind(this);
         this.handleEndDateChange = this.handleEndDateChange.bind(this)
     }
-
+    dateValidation(){
+        let {startDate,endDate} = this.state;
+        if (moment(startDate).isAfter(moment(endDate))){
+            this.props.sharedData.notification({message:'start date cant be after End date',type:'error'});
+            return false
+        }
+        return true
+    }
     handleStartDateChange(date){
         this.setState({
             startDate: date
@@ -45,7 +52,7 @@ export default class BrowseFiles extends Component{
         });
     }
     handleSearch(){
-        let {title,startDate,endDate,description,tags,fileType,uploadedBy} = this.state
+        let {title,startDate,endDate,description,tags,fileType,uploadedBy} = this.state;
         let searchObject = {
             title,
             startDate : startDate ? startDate.unix() : '',
@@ -55,14 +62,17 @@ export default class BrowseFiles extends Component{
             fileType,
             uploadedBy
         }
-        searchFiles(searchObject)
-            .then((res)=>{
-                console.log(res)
-                this.props.showBrowser(res.data);
-            })
-            .catch((e)=>{
-                console.log(e)
-            })
+        if (this.dateValidation()){
+            searchFiles(searchObject)
+                .then((res)=>{
+                    console.log(res)
+                    this.props.showBrowser(res.data);
+                })
+                .catch((e)=>{
+                    console.log(e)
+                })
+        }
+
     }
 
     render(){

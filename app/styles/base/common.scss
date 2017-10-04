@@ -194,6 +194,14 @@
 .newco-tags{
   padding: 5px;
   padding-left: 18px;
+  overflow: auto;
+  height: 40px;
+  max-height: 40px;
+  border-radius: 0px!important;
+
+}
+.tags-search,.description-search{
+
 }
 .browser-empty-container{
   border:1px solid $light-grey;
@@ -202,4 +210,31 @@
 .browser-empty{
   padding:20px;
   font-size: 20px;
+}
+.modal-error-message{
+  color: #CF000F;
+  margin-right: 30px;
+  display: inline-block;
+  padding-top: 15px;
+  font-size: 15px;
+  margin-bottom: 0;
+}
+.inline-block{
+  display: inline-block;
+}
+.extension-info{
+  font-size: 10px!important;
+  .glyphicon-ok {
+    color: $light-green;
+    margin-right: 5px;
+  }
+  .glyphicon-remove {
+    color: $light-red;
+    margin-right: 5px;
+  }
+}
+.short-text{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }

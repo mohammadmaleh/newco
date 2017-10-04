@@ -13,91 +13,134 @@ import TagsInput from 'react-tagsinput'
 export default class EditFileModal  extends Component{
     constructor(){
         super();
+
     }
     componentWillMount(){
-        this.props.editForm.image = ''
-        this.props.editForm.newFile = null
+        this.props.editForm.image = '';
+        this.props.editForm.newFile = null;
 
-        this.setState(this.props.editForm)
+        this.setState(this.props.editForm,()=>{
+            this.updateUploadRules()
+
+        })
     }
 
     handleEditFormChanges(event){
         const target = event.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.name;
-        if (name === 'fileType')
+        if (name === 'fileType'){
             this.setState({
                 newFile:null
+            },()=>{
+                this.updateUploadRules()
             })
+        }
         this.setState({
             [name]: value
 
         });
 
     }
-
     handleSubmitEditFile(){
-        let{title,fileType,description,tags,_id,file,newFile} = this.state;
+        let{title,fileType,description,tags,_id,file,newFile,type} = this.state;
         if (title.length > 0 ){
-            if (fileType === '')
+
+            if (!fileType || fileType === '')
                 fileType = null;
-            let EditObject = new FormData()
-            EditObject.append('title',title)
-            EditObject.append('fileType',fileType)
-            EditObject.append('tags',tags)
-            EditObject.append('newFile',newFile)
-            EditObject.append('description',description)
+            else
+                fileType = fileType._id
+
+            let uploadObject = new FormData();
+            uploadObject.append('title',title);
+            uploadObject.append('fileType',fileType);
+            uploadObject.append('tags',tags);
+            uploadObject.append('uploadedAt',moment().unix());
+            uploadObject.append('uploadedBy',getUserInfo().username);
+            uploadObject.append('type',type);
+            uploadObject.append('description',description);
+
             if (newFile)
-                EditObject.append('type',newFile.type)
+                uploadObject.append('type',newFile.type);
 
-
-            patchFiles(_id,EditObject)
+            patchFiles(_id,uploadObject)
                 .then((res)=>{
                     this.props.sharedData.notification({message:'Edited successfully',type:'success'})
+                    this.props.closeEditModal()
 
                 })
                 .catch((e)=>{
                     this.props.sharedData.notification({message:'something went wrong try again later',type:'error'})
-
                 })
-
-
         }
+        else {
+            this.props.sharedData.notification({message:'title should be more than 4 characters',type:'error'})
+        }
+    }
+    updateUploadRules(){
+        let fileExtensionsRulesString = '';
+        let maxSize = 999999
+        this.props.sharedData.fileTypeList.map(fileType =>{
+
+            if ( fileType.rule && this.state.fileType && (fileType._id === this.state.fileType || fileType._id === this.state.fileType._id)){
+                let {fileExtensions} =fileType.rule;
+                if (fileExtensions.images)
+                    fileExtensionsRulesString += 'image/jpeg, image/png,image/jpg ,'
+                if (fileExtensions.word)
+                    fileExtensionsRulesString += 'application/msword , application/msword , application/vnd.openxmlformats-officedocument.wordprocessingml.document ,'
+                if (fileExtensions.excel)
+                    fileExtensionsRulesString += 'application/vnd.ms-excel , application/msexcel , application/x-msexcel ,application/x-ms-excel , application/xls , application/x-xls ,'
+                if (fileExtensions.pdf)
+                    fileExtensionsRulesString += 'application/pdf ,'
+                if (fileExtensions.mp3)
+                    fileExtensionsRulesString += ' audio/mpeg, audio/mp3 , audio/mp3 ,'
+                if (fileExtensions.mp4)
+                    fileExtensionsRulesString += 'video/mp4  ,'
+                if (fileExtensions.fonts)
+                    fileExtensionsRulesString += 'image/jpeg, image/png,image/jpg ,'
+                if (fileExtensions.zip)
+                    fileExtensionsRulesString += 'application/x-rar-compressed, application/octet-stream , application/zip, application/octet-stream ,'
+
+                maxSize = fileType.rule.maxSize
 
 
+            }
+
+        })
+        this.setState({
+            fileExtensionsRulesString,
+            maxSize
+        })
     }
     renderImage(){
         let file =this.state;
         let extType = file.type
         if (file.newFile)
-            return <img src={file.newFile.preview} alt=""/>
+            return <img src={file.newFile.preview} alt=""/>;
         else {
             if (extType.includes("image")){
                 return <img src={file.image} alt=""/>
-                // return <img src={require('../assets/images/pogba.png')} alt=""/>
-
             }
-
             else if(extType.includes("msword") || extType.includes("wordprocessingml")  ||extType.includes("ms-word")){
-                return  <img src={require('../assets/images/fileTypes/Doc.png')} alt=""/>
+                return  <img src={require('../../assets/images/fileTypes/DOC.png')} alt=""/>
             }
             else if(extType.includes("ms-excel") || extType.includes("spreadsheetml")  ||extType.includes("ms-excel")){
-                return  <img src={require('../assets/images/fileTypes/XLSX.png')} alt=""/>
+                return  <img src={require('../../assets/images/fileTypes/XLSX.png')} alt=""/>
             }
             else if(extType.includes("pdf")){
-                return  <img src={require('../assets/images/fileTypes/PDF.png')} alt=""/>
+                return  <img src={require('../../assets/images/fileTypes/PDF.png')} alt=""/>
             }
             else if(extType.includes("mp3")){
-                return  <img src={require('../assets/images/fileTypes/MP3.png')} alt=""/>
+                return  <img src={require('../../assets/images/fileTypes/MP3.png')} alt=""/>
             }
             else if(extType.includes("mp4")){
-                return  <img src={require('../assets/images/fileTypes/VIDEO.png')} alt=""/>
+                return  <img src={require('../../assets/images/fileTypes/VIDEO.png')} alt=""/>
             }
             else if( extType.includes("vnd.ms-fontobject")||extType.includes("font-woff")||extType.includes("font-woff")||extType.includes("svg+xml")||extType.includes("x-font-opentype")){
-                return  <img src={require('../assets/images/fileTypes/FONT.png')} alt=""/>
+                return  <img src={require('../../assets/images/fileTypes/FONT.png')} alt=""/>
             }
             else {
-                return  <img src={require('../assets/images/fileTypes/Blank.png')} alt=""/>
+                return  <img src={require('../../assets/images/fileTypes/Blank.png')} alt=""/>
 
             }
         }
@@ -105,22 +148,19 @@ export default class EditFileModal  extends Component{
     }
     handleChangeTags(tags) {
         this.setState({tags})
-        this.props.handleFilesChanges('tags',tags,this.props.file.id)
     }
 
     handleEditFileChange(acceptedFiles, rejectedFiles){
         this.setState({
             newFile:acceptedFiles[0]
         })
-
-
-
-
+        if (rejectedFiles.length>0 ){
+            this.props.sharedData.notification({message:'rejected File due to rule ',type:'error'})
+        }
     }
 
     render(){
-        let editForm =this.state
-
+        let editForm =this.state;
         return(
             <div>
                 <Modal.Header closeButton>
@@ -130,11 +170,12 @@ export default class EditFileModal  extends Component{
                     <div className="newco-form">
                         <div className="row">
                             <div className="col-lg-6">
+
                                 <Dropzone
                                     className="dropzone"
                                     multiple={false}
                                     onDrop={::this.handleEditFileChange}
-                                    maxSize={this.state.maxSize}
+                                    maxSize={this.state.maxSize*1000000}
                                     accept={this.state.fileExtensionsRulesString}
                                 >
                                     <p>Drag and Drop <br/> or <br/> Click <br/> to Edit File</p>
@@ -159,7 +200,7 @@ export default class EditFileModal  extends Component{
 
                                 <select name="fileType"  className="newco-text-input" value={editForm.fileType ? editForm.fileType._id :''} onChange={::this.handleEditFormChanges}>
                                     <option value="" selected> Any</option>
-                                    {this.props.sharedData.availableFileTypeList.map(fileType =>
+                                    {this.props.sharedData.availableFileTypes.map(fileType =>
                                         <option key={fileType._id} value={fileType._id}>{fileType.name}</option>
                                     )};
                                 </select>
@@ -177,7 +218,7 @@ export default class EditFileModal  extends Component{
                             <div className="col-lg-6">
 
                                 <label htmlFor="tags">Tags:</label>
-                                <TagsInput className="newco-text-input newco-tag" value={this.state.tags} onChange={::this.handleChangeTags} />
+                                <TagsInput className="newco-text-input newco-tags" value={this.state.tags} onChange={::this.handleChangeTags} />
 
                             </div>
 
@@ -185,8 +226,8 @@ export default class EditFileModal  extends Component{
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
-                    <button className="btn btn-info" onClick={()=>{this.props.closeEditModal()}}>Close</button>
-                    <button className="btn btn-success" onClick={::this.handleSubmitEditFile}>edit</button>
+                    <a className="newco-button light-red-background" onClick={()=>{this.props.closeEditModal()}}>Close</a>
+                    <a className="newco-button dark-yellow-background" onClick={::this.handleSubmitEditFile}>edit</a>
                 </Modal.Footer>
             </div>
         )

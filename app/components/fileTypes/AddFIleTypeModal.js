@@ -17,15 +17,13 @@ export default class AddFIleTypeModal extends  Component{
         const target = event.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.name;
-
-
         this.setState({
             [name]: value
         });
     }
     createFileType(){
         let{name,father,rule} = this.state;
-        if (name.length>0 ){
+        if (name.length>3 ){
             if (father === '')
                 father=null;
             if (rule === '')
@@ -41,24 +39,22 @@ export default class AddFIleTypeModal extends  Component{
             postFileTypes(createObject)
                 .then((res)=>{
                     this.props.sharedData.refreshRulesAndFileTypes();
+
                     this.props.closeAddModal()
                     this.props.sharedData.notification({message:'Your file type has been added successfully',type:'success'})
 
                 })
                 .catch((e)=>{
                     this.props.sharedData.notification({message:'something went wrong try again later',type:'error'})
-
                 })
-
-
+        }
+        else{
+            this.sharedData.notification({message:'name must be more than 4 characters',type:'error'})
         }
     }
-
     render(){
         return (
             <div>
-
-
                 <Modal.Header closeButton>
                     <Modal.Title><h3>Add File Type</h3></Modal.Title>
                 </Modal.Header>
@@ -69,19 +65,16 @@ export default class AddFIleTypeModal extends  Component{
                             <div className="col-lg-6">
                                 <label htmlFor="">Name:</label>
                                 <input  className="newco-text-input" type="text" name="name" onChange={::this.handleFormChange} value={this.state.name}/>
-
                             </div>
                             <div className="col-lg-6">
                                 <label htmlFor="">Father File Type:</label>
                                 <select  className="newco-text-input" name="father" onChange={::this.handleFormChange}>
                                     <option value="" selected> none</option>
-                                    {this.props.sharedData.fileTypeList.map(fileType =>
+                                    {this.props.sharedData.availableFileTypes.map(fileType =>
                                         <option key={fileType._id} value={fileType._id}>{fileType.name}</option>
                                     )};
                                 </select>
                             </div>
-
-
                         </div>
                         <div className="row">
                             <div className="col-lg-6">
@@ -94,19 +87,12 @@ export default class AddFIleTypeModal extends  Component{
                                 </select>
                             </div>
                         </div>
-
-
                     </div>
-
-
-
                 </Modal.Body>
                 <Modal.Footer>
                     <a className="newco-button dark-yellow-background " onClick={this.props.closeAddModal}>Close</a>
                     <a className="newco-button dark-green-background margin-left-15" onClick={::this.createFileType}>Create</a>
-
                 </Modal.Footer>
-
             </div>
 
         )
