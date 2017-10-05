@@ -13,7 +13,6 @@ export default class RulesPanel extends Component{
     }
     render(){
         let {selectedRule} = this.props
-        console.log(selectedRule)
 
         return(
         <div>

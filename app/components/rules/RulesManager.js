@@ -39,7 +39,8 @@ export default class RulesManager extends Component{
     }
     handleSelectRule(rule){
         this.setState({
-            selectedRule:rule
+            selectedRule:rule,
+            editRuleForm:rule
         })
     }
 
@@ -219,7 +220,7 @@ export default class RulesManager extends Component{
                 .then(res =>{
                     this.closeEditRuleModal()
                     this.props.sharedData.refreshRulesAndFileTypes()
-                    this.props.sharedData.notification({message:'edited successfully',type:'error'})
+                    this.props.sharedData.notification({message:'edited successfully',type:'success'})
 
                 })
                 .catch(e =>{
@@ -258,9 +259,33 @@ export default class RulesManager extends Component{
 
 
     }
+    handelChangeEditRuleExtension(event){
+
+        const target = event.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const name = target.name;
+
+        let state = this.state
+        let {editRuleForm} =  state
+        let {fileExtensions} =  editRuleForm
+
+        this.setState({
+            ...state,
+            editRuleForm:{
+                ...editRuleForm,
+                fileExtensions:{
+                    ...fileExtensions,
+                    [name]:value
+                }
+            }
+        })
+
+
+
+    }
+
     render(){
         let {addRuleForm,editRuleForm,selectedRule}= this.state
-
         return(
             <div>
                 <div className=" body-container light-grey-background">
@@ -413,19 +438,73 @@ export default class RulesManager extends Component{
                         <Modal.Title><h3>Edit Rule</h3></Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <div className="form-control">
-                            name <input type="text" name='name' value={editRuleForm.name} onChange={::this.handleEditRuleFormChange}/>
+
+
+
+                        <div className="newco-form">
+                            <div className="row">
+                                <div className="col-lg-6">
+                                    <label>Name:</label>
+                                    <input type="text" name='name'  className="newco-text-input" value={editRuleForm.name} onChange={::this.handleEditRuleFormChange}/>
+                                </div>
+                                <div className="col-lg-6">
+                                    <label>Max Size(in MB):</label>
+                                    <input type="text" className="newco-text-input" value={editRuleForm.maxSize} name="maxSize" onChange={::this.handleEditRuleFormChange}/>
+                                </div>
+
+                            </div>
+                            <div className="row extensions-input">
+                                <div className="col-lg-3">
+
+                                    <input type="checkBox" className="margin-right-10" name="images" defaultChecked={editRuleForm.fileExtensions.images} onChange={::this.handelChangeEditRuleExtension}/>
+                                    <a>Images</a>
+                                </div>
+                                <div className="col-lg-3">
+
+                                    <input type="checkBox" className="margin-right-10" name="word" defaultChecked={editRuleForm.fileExtensions.word} onChange={::this.handelChangeEditRuleExtension}/>
+                                    <a>Word</a>
+                                </div>
+                                <div className="col-lg-3">
+
+                                    <input type="checkBox" className="margin-right-10" name="excel" defaultChecked={editRuleForm.fileExtensions.excel} onChange={::this.handelChangeEditRuleExtension}/>
+                                    <a>Excel</a>
+                                </div>
+                                <div className="col-lg-3">
+
+                                    <input type="checkBox" className="margin-right-10" name="pdf" defaultChecked={editRuleForm.fileExtensions.pdf} onChange={::this.handelChangeEditRuleExtension}/>
+                                    <a>PDF</a>
+                                </div>
+
+                            </div>
+                            <div className="row">
+                                <div className="col-lg-3">
+
+                                    <input type="checkBox" className="margin-right-10" name="mp3" defaultChecked={editRuleForm.fileExtensions.mp3} onChange={::this.handelChangeEditRuleExtension}/>
+                                    <a>MP3</a>
+                                </div>
+                                <div className="col-lg-3">
+
+                                    <input type="checkBox" className="margin-right-10" name="mp4" defaultChecked={editRuleForm.fileExtensions.mp4} onChange={::this.handelChangeEditRuleExtension}/>
+                                    <a>MP4</a>
+                                </div>
+                                <div className="col-lg-3">
+
+                                    <input type="checkBox" className="margin-right-10" name="zip" defaultChecked={editRuleForm.fileExtensions.zip} onChange={::this.handelChangeEditRuleExtension}/>
+                                    <a>ZIP</a>
+                                </div>
+                                <div className="col-lg-3">
+
+                                    <input type="checkBox" name="fonts" defaultChecked={editRuleForm.fileExtensions.fonts} onChange={::this.handelChangeEditRuleExtension}/>
+                                    <a>Fonts</a>
+                                </div>
+                            </div>
 
                         </div>
-                        <div className="form-control">
-                            size <input type="text" value={editRuleForm.maxSize} name="maxSize" onChange={::this.handleEditRuleFormChange}/>
-                        </div>
-                        {this.renderEditExtensions()}
 
                     </Modal.Body>
                     <Modal.Footer>
-                        <button className="btn btn-info" onClick={::this.closeEditRuleModal}>Close</button>
-                        <button className="btn btn-success" onClick={::this.handleEditRule}>Edit</button>
+                        <a className="newco-button light-red-background" onClick={::this.closeEditRuleModal}>Close</a>
+                        <a className="newco-button dark-yellow-background" onClick={::this.handleEditRule}>Edit</a>
                     </Modal.Footer>
 
                 </Modal>
