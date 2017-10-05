@@ -31,15 +31,19 @@ export default class EditFileModal  extends Component{
         const name = target.name;
         if (name === 'fileType'){
             this.setState({
-                newFile:null
+                newFile:null,
+                [name]: value
             },()=>{
                 this.updateUploadRules()
             })
         }
-        this.setState({
-            [name]: value
+        else{
+            this.setState({
+                [name]: value
 
-        });
+            });
+        }
+
 
     }
     handleSubmitEditFile(){
@@ -48,8 +52,9 @@ export default class EditFileModal  extends Component{
 
             if (!fileType || fileType === '')
                 fileType = null;
-            else
+            else if(fileType._id)
                 fileType = fileType._id
+
 
             let uploadObject = new FormData();
             uploadObject.append('title',title);

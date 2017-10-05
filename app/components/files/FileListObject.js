@@ -28,9 +28,6 @@ export default class FileListObject extends Component {
             hasFileTypeChildren:children.length>0
          })
     }
-    handleDownload(){
-
-    }
     findChildren(){
         let {row,sharedData,files} = this.props;
         let {fileTypeList} = sharedData
@@ -74,7 +71,8 @@ export default class FileListObject extends Component {
                                 <div className="col-lg-3 short-text" > {row.title}</div>
                                 <div className="col-lg-3"> {moment.unix(row.uploadedAt).format('DD/MM/YYYY')}</div>
                                 <div className="col-lg-3"> {row.uploadedBy}</div>
-                                <div className="col-lg-3" onClick={::this.handleDownload}> download</div>
+                                <a href={"/"+row.filePath} download={row.title} > download</a>
+
                             </div>
 
                         </li>
@@ -110,7 +108,6 @@ export default class FileListObject extends Component {
                                 <div className="col-lg-3 short-text" > Title</div>
                                 <div className="col-lg-3"> Uploaded At</div>
                                 <div className="col-lg-3"> Uploaded By</div>
-                                <div className="col-lg-3" onClick={::this.handleDownload}> download</div>
                             </div>
 
                         </li>

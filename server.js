@@ -368,32 +368,6 @@ app.post('/api/file', upload.single('file'),function (req, res, next) {
 
 
 });
-app.get('/api/download/:id', function(req, res){
-    let id = req.params.id;
-
-    if (!ObjectID.isValid(id)){
-        return res.status(404).send();
-    }
-    File.find({_id:id})
-        .then(file=>{
-            var dir=__dirname + '/'  + file[0].filePath; // give path
-            res.download(dir, file.title,function (err) {
-                if(err){
-                    res.status(500).send(err)
-                }
-
-            });
-
-
-        })
-        .catch(e =>{
-            return res.status(404).send(e);
-
-        })
-
-});
-
-// rules api
 app.post('/api/rule',(req,res)=>{
     let body = _.pick(req.body , ['name','maxSize','fileExtensions','createdBy','createdAt'])
     var rule = new Rule(body)

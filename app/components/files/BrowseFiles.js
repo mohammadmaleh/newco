@@ -8,7 +8,6 @@ import moment from 'moment'
 import {getUserInfo} from 'storage'
 import AddFileModal from 'AddFIleModal'
 import EditFileModal from './EditFileModal'
-import {downloadFile} from 'filesApi'
 import {Accordion,Panel} from 'react-bootstrap'
 
 export default class BrowseFiles extends Component{
@@ -104,19 +103,7 @@ export default class BrowseFiles extends Component{
             showDeleteModal:true
         })
     }
-    handleDownloadFile(id){
-        console.log('downloading')
-        window.open('/api/download/'+id)
-        // downloadFile(id)
-        //     .then(res => {
-        //         console.log(res)
-        //         window.open('/download');
-        //     })
-        //     .catch(e=>{
-        //         console.log(e)
-        //
-        //     })
-    }
+
     findFiles(){
         let {files} = this.state;
         if(files){
@@ -129,9 +116,10 @@ export default class BrowseFiles extends Component{
                 return childrenFiles.map((row)=>{
                     return <li className="list-group-item" key={row._id} onClick={(e)=>{    e.stopPropagation(); this.handleBrowseFile(row)}}>
                             <div className="row">
-                                <div className="col-lg-4 short-text" >    {row.title}</div>
-                                <div className="col-lg-4">   {row.uploadedBy}</div>
-                                <div className="col-lg-4">  {moment.unix(row.uploadedAt).format('DD/MM/YYYY')}</div>
+                                <div className="col-lg-3 short-text" >    {row.title}</div>
+                                <div className="col-lg-3">   {row.uploadedBy}</div>
+                                <div className="col-lg-3">  {moment.unix(row.uploadedAt).format('DD/MM/YYYY')}</div>
+                                <a href={"/"+row.filePath} download={row.title} > download</a>
                             </div>
 
 
@@ -193,9 +181,9 @@ export default class BrowseFiles extends Component{
                                                     <div>
                                                         <div>
                                                             <div className="row normal-blue-background browse-file-header">
-                                                                <div className="col-lg-4">File Name</div>
-                                                                <div className="col-lg-4">Uploaded By</div>
-                                                                <div className="col-lg-4">Upload By</div>
+                                                                <div className="col-lg-3">File Name</div>
+                                                                <div className="col-lg-3">Uploaded By</div>
+                                                                <div className="col-lg-3">Upload By</div>
                                                             </div>
                                                             <div className=" rule-list list-group" >
                                                                 {this.findFiles()}

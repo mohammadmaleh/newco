@@ -31,10 +31,3 @@ export const deleteFile = (id)=>{
     });
 
 }
-export const downloadFile = (id)=>{
-    return axios({
-        method: 'get',
-        url:  '/api/download/'+id,
-    });
-
-}
