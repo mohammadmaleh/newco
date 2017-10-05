@@ -173,7 +173,7 @@ export default class RulesManager extends Component{
         let {addRuleForm} = this.state
         addRuleForm.createdAt = moment().unix()
         addRuleForm.createdBy = getUserInfo().username
-        if (addRuleForm.name > 3 ){
+        if (addRuleForm.name.length > 3 ){
             postRule(addRuleForm)
                 .then(res =>{
 
@@ -214,7 +214,7 @@ export default class RulesManager extends Component{
     handleEditRule(){
         let {editRuleForm,selectedRule} =  this.state;
         let id = selectedRule._id;
-        if (editRuleForm.name>3 ){
+        if (editRuleForm.name.length >3 ){
             patchRule(id,editRuleForm)
                 .then(res =>{
                     this.closeEditRuleModal()

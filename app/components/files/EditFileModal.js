@@ -64,9 +64,12 @@ export default class EditFileModal  extends Component{
             uploadObject.append('uploadedBy',getUserInfo().username);
             uploadObject.append('type',type);
             uploadObject.append('description',description);
-
-            if (newFile)
+            if (newFile){
+                uploadObject.append('newFile',newFile);
                 uploadObject.append('type',newFile.type);
+
+
+            }
 
             patchFiles(_id,uploadObject)
                 .then((res)=>{

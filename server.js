@@ -281,7 +281,6 @@ app.post('/api/file/:id',upload.single('newFile'),(req,res)=>{
     let id = req.params.id;
     let body =  _.pick(req.body, ['title','description','tags','fileType',]);
 
-    console.log(body)
     if (body.fileType === 'null' || body.fileType === '')
         body.fileType= null;
     if ( body.tags)

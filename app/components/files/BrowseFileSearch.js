@@ -98,6 +98,7 @@ export default class BrowseFiles extends Component{
                             <label htmlFor="title">End Date</label>
                             <DatePicker
                                 dateFormat="DD/MM/YYYY"
+                                onChange={this.handleEndDateChange}
 
                                 className="newco-text-input"
                                 selected={this.state.endDate}
