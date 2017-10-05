@@ -3,7 +3,6 @@ const validator = require('validator')
 const jwt = require('jsonwebtoken')
 const _ = require('lodash')
 const bcrypt = require('bcryptjs')
-// to add methods to our model we can do directly so we use schema then add the method then add the whole thing to the model
 let UserSchema =  new mongoose.Schema({
 
         password:{
@@ -37,12 +36,12 @@ let UserSchema =  new mongoose.Schema({
             }
         }]
     })
-UserSchema.methods.toJSON = function(){ // overwriting an existing function to downsize what are we returning
+UserSchema.methods.toJSON = function(){
  let user = this;
  let userObject = this.toObject()
     return _.pick(userObject,['_id','email','username'])
 }
-UserSchema.methods.generateAuthToken =function () { // we used old function because arrow function doesn't bind this
+UserSchema.methods.generateAuthToken =function () {
     let user = this ;
     let access = 'auth';
     let token = jwt.sign({_id : user._id.toHexString(),agenerateAuthTokenccess:access},process.env.JTWSecret).toString();/* secert code inside config.json*/
@@ -58,7 +57,7 @@ UserSchema.statics.findByToken= function (token) {
     try{
        decoded= jwt.verify(token,process.env.JTWSecret)/* secert code inside config.json*/
     } catch (e){
-        return new Promise.reject() // return a promise that alwais rejects
+        return new Promise.reject()
 
     }
     return User.findOne({
@@ -93,7 +92,7 @@ UserSchema.statics.findByCredentials = function (username,password) {
             return Promise.reject();
 
         }
-        return new Promise((resolve,reject)=>{ // we're creating a new promise because bcrypt not supporting promisess
+        return new Promise((resolve,reject)=>{
             bcrypt.compare(password,user.password,(err,res)=>{
 
                 if (res){

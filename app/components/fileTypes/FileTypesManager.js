@@ -69,6 +69,7 @@ export default class FileTypesManager extends Component{
         deleteFileType(selectedFileType._id)
             .then((res)=>{
                 this.props.sharedData.notification({message:'Deleted successfully',type:'success'})
+                this.closeDeleteModal()
 
                 console.log(res)
 
@@ -77,7 +78,6 @@ export default class FileTypesManager extends Component{
 
             console.log(e)
         })
-        this.closeModal()
     }
     renderRows(){
         let {fileTypeList} = this.props.sharedData;
